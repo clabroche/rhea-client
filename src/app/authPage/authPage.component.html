@@ -1,0 +1,16 @@
+<div id="authPage">
+  <div id="title">
+    <h2>Connexion</h2>
+  </div>
+  <div id="container">
+    <form (submit)="connect()" [formGroup]="form" id="authForm">
+      <input type="text" [formControlName]="'login'" [cltValidators]="form.controls['login']" placeholder="Nom d'utilisateur" id="nameInput">
+      <clt-form-errors [model]="form.controls['login']"></clt-form-errors>
+
+      <input type="password" [formControlName]="'password'" [cltValidators]="form.controls['password']" placeholder="Mot de passe" id="passwordInput">
+      <clt-form-errors [model]="form.controls['password']"></clt-form-errors>
+
+      <button type="submit" class="btn btn-sm btn-success" [disabled]="form.invalid" >Se connecter</button>
+    </form>
+  </div>
+</div>

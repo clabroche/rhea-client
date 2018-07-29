@@ -1,15 +1,24 @@
-import { Component } from '@angular/core';
-import { CltThemeService, CltSideBarService, Configuration } from 'ngx-callisto/dist';
+import { Component, OnInit } from '@angular/core';
+import { CltThemeService, CltSideBarService, Configuration, CltNotificationsService } from 'ngx-callisto/dist';
+import { AuthService, AuthError } from '../auth/auth.service';
+import { GraphQLError } from '../graphQL/graphQL.module';
+import { merge } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
   sidebarConf: Configuration
-  constructor(theme: CltThemeService, public sidebarService: CltSideBarService) {
+  constructor(
+    theme: CltThemeService,
+    public sidebarService: CltSideBarService,
+    public authservice: AuthService,
+    private notifService: CltNotificationsService,
+    private authService: AuthService
+  ) {
     this.sidebarConf= {
       list: [
         {
@@ -29,4 +38,17 @@ export class AppComponent {
       if (touchStart > window.innerWidth - 20 && delta < -100) sidebarService.close()
     }))
   }
+  ngOnInit() {
+    merge(AuthError, GraphQLError).subscribe(({ message, code, deleteAll }) => {
+      if (deleteAll) {
+        setTimeout(() => {
+          this.notifService.deleteAll();
+          this.notifService.add(message.title, message.detail);
+        }, 10);
+      } else {
+        this.notifService.add(message.title, message.detail);
+      }
+    });
+  }
+
 }

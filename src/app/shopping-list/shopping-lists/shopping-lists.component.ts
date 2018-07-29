@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 
 @Component({
   selector: 'shopping-lists',
@@ -7,9 +8,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShoppingListsComponent implements OnInit {
 
-  constructor() { }
+  shoppingLists = [];
+
+  constructor(private graphql: GraphQLService) { }
 
   ngOnInit() {
+    this.getAllShoppingList();
+  }
+
+  getAllShoppingList() {
+    this.graphql.query(`
+      shoppingLists {
+        uuid
+        name
+        description
+        items {
+          uuid
+          name
+          description
+        }
+      }
+    `).then(({ shoppingLists }) => {
+        this.shoppingLists = shoppingLists;
+      });
   }
 
 }
