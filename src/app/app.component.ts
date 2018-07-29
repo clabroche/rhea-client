@@ -11,32 +11,31 @@ import { merge } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-  sidebarConf: Configuration
+  sidebarConf: Configuration;
   constructor(
     theme: CltThemeService,
     public sidebarService: CltSideBarService,
     public authservice: AuthService,
     private notifService: CltNotificationsService,
-    private authService: AuthService
   ) {
-    this.sidebarConf= {
+    this.sidebarConf = {
       list: [
         {
-          icon: "fas fa-home",
-          description:'Listes',
+          icon: 'fas fa-home',
+          description: 'Listes',
           url: '/shoppingLists'
         }
-      ]     
-    }
+      ]
+    };
     let touchStart;
     document.addEventListener('touchstart', (ev => {
-      touchStart = ev.touches[0].clientX
-    }))
+      touchStart = ev.touches[0].clientX;
+    }));
     document.addEventListener('touchmove', (ev => {
-      const delta = ev.touches[0].clientX - touchStart
-      if (touchStart < 20 && delta > 100) sidebarService.open()
-      if (touchStart > window.innerWidth - 20 && delta < -100) sidebarService.close()
-    }))
+      const delta = ev.touches[0].clientX - touchStart;
+      if (touchStart < 20 && delta > 100) sidebarService.open();
+      if (touchStart > window.innerWidth - 20 && delta < -100) sidebarService.close();
+    }));
   }
   ngOnInit() {
     merge(AuthError, GraphQLError).subscribe(({ message, code, deleteAll }) => {

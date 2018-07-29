@@ -7,7 +7,7 @@ import { CltNotificationsService } from 'ngx-callisto/dist';
  * It's the Home main component
  */
 @Component({
-  selector: 'authPage',
+  selector: 'auth-page',
   templateUrl: './authPage.component.html',
   styleUrls: ['./authPage.component.scss']
 })
