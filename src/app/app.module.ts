@@ -8,8 +8,8 @@ import { CltNavigationsModule, CltOverlayModule, CltFormsModule } from 'ngx-call
 import { GraphQLModule } from '../graphQL/graphQL.module';
 import { AuthModule } from '../auth/auth.module';
 import { AuthPageComponent } from './authPage/authPage.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
+import { RheaSdkModule } from './rhea-sdk/rhea-sdk.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { AuthService } from '../auth/auth.service';
     BrowserAnimationsModule,
     CltNavigationsModule.forRoot(),
     CltOverlayModule.forRoot(),
-    ReactiveFormsModule,
+    RheaSdkModule,
     CltFormsModule,
     RouterModule.forRoot([
       { path: '', resolve: { authService: AuthService }, children: [
@@ -34,7 +34,6 @@ import { AuthService } from '../auth/auth.service';
     AuthModule
   ],
   providers: [CommonService],
-  entryComponents:[],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

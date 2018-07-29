@@ -1,9 +1,11 @@
 
 <div class="rhea-container">
   <div class="rhea-content">
-    {{
-      shoppingLists | json
-    }}
+    <rhea-card *ngFor='let shoppingList of shoppingLists' 
+      [title]="shoppingList.name"
+      [description]="shoppingList.description"
+    ></rhea-card>
+    
   </div>
   <div class="rhea-bar-bottom">
     <div class="rhea-bar-content">
