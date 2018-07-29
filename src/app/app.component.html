@@ -1,2 +1,11 @@
-<clt-sidebar></clt-sidebar>
-<router-outlet></router-outlet>
+<div id="app-container">
+    <clt-sidebar [conf]="sidebarConf"></clt-sidebar>
+    <div id="app-content">
+        <clt-navbar>
+            <div left></div>
+        </clt-navbar>
+        <div id="app-outlet">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -11,6 +12,7 @@ import { CltNavigationsModule } from 'ngx-callisto/dist';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CltNavigationsModule.forRoot(),
     RouterModule.forRoot([
       { path: '', redirectTo: '/shoppingLists', pathMatch: 'full'},

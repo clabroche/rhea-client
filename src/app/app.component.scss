@@ -1,0 +1,39 @@
+#app-container{
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    #app-content {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        height: 100vh;
+        width: 100%;
+        #app-outlet{
+            height: 100%;
+            overflow-y: auto;
+        }
+    }
+}
+
+@keyframes closeSidebarMobile {
+    100% { width: 0; }
+}
+@keyframes openSidebarMobile {
+    100% { width: 80vw; }
+}
+::ng-deep {
+    #sidebar{
+        &:before {
+            height: 60px !important;
+            display: inline-table !important;
+        }
+        @media screen and (max-width: 640px) {
+            &.openSidebar {
+                animation-name: openSidebarMobile !important;
+            }
+            &.closeSidebar {
+                animation-name: closeSidebarMobile !important;
+            }
+        }
+    }
+}
