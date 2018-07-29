@@ -1,0 +1,24 @@
+
+.rhea-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    .rhea-bar-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 2px solid var(--headerBgColor);
+        .rhea-bar-content{
+            padding: 10px;
+        }
+        .action-button {
+            padding: 10px;
+            font-size: 2em;
+            background-color: var(--headerBgColorAccent);
+            color: var(--headerTextColor);
+        }
+    }
+}
+

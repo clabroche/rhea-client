@@ -1,3 +1,31 @@
-<p>
-  shopping-lists works!
-</p>
+
+<div class="rhea-container">
+  <div class="rhea-content">
+    {{
+      shoppingLists | json
+    }}
+  </div>
+  <div class="rhea-bar-bottom">
+    <div class="rhea-bar-content">
+      {{ shoppingLists.length }} liste{{shoppingLists.length ? 's': ''}} au total
+    </div>
+    <div class="action-button" (click)="addShoppingList()">+</div>
+  </div>
+</div>
+
+
+<clt-popup #addPopup title="Ajouter une liste de course">
+  <div title>
+    Ajouter une liste de course 
+  </div>
+  <ng-template clt-popup-body>
+    <form [formGroup]="shoppingListForm">
+      <label>Nom</label>
+      <input type="text" formControlName="name" [cltValidators]="shoppingListForm.controls['name']" />
+      <clt-form-errors [model]="shoppingListForm.controls['name']"></clt-form-errors>
+      <label>Description</label>
+      <input type="text" formControlName="description" [cltValidators]="shoppingListForm.controls['description']" />
+      <clt-form-errors [model]="shoppingListForm.controls['description']"></clt-form-errors>
+    </form>
+  </ng-template>
+</clt-popup>
