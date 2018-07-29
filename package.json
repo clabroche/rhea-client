@@ -20,8 +20,10 @@
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
+    "@fortawesome/fontawesome-free": "^5.2.0",
     "core-js": "^2.5.4",
-    "ngx-callisto": "git+ssh://git@github.com/clabroche/ngx-callisto.git#v4.0.3",
+    "ngx-callisto": "git+ssh://git@github.com/clabroche/ngx-callisto.git#v4.0.6",
+    "ol": "^5.1.3",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },
