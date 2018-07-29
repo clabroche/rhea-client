@@ -1,20 +1,17 @@
 
 <div class="rhea-container">
   <div class="rhea-content">
-    <rhea-card *ngFor='let shoppingList of shoppingLists' 
-      [title]="shoppingList.name"
-      [description]="shoppingList.description"
-    ></rhea-card>
-    
+    <a routerLink="./{{shoppingList.uuid}}" *ngFor='let shoppingList of shoppingLists'>
+      <rhea-card
+        [title]="shoppingList.name"
+        [description]="shoppingList.description"
+      ></rhea-card>
+    </a>
   </div>
-  <div class="rhea-bar-bottom">
-    <div class="rhea-bar-content">
-      {{ shoppingLists.length }} liste{{shoppingLists.length ? 's': ''}} au total
-    </div>
-    <div class="action-button" (click)="addShoppingList()">+</div>
-  </div>
+  <rhea-bar-bottom (action)='addShoppingList()'>
+     {{ shoppingLists.length }} liste{{shoppingLists.length ? 's': ''}} au total
+  </rhea-bar-bottom>
 </div>
-
 
 <clt-popup #addPopup title="Ajouter une liste de course">
   <div title>

@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CltPopupComponent } from 'ngx-callisto/dist';
+import { CommonService } from '../../providers/common.service';
 
 @Component({
   selector: 'shopping-lists',
@@ -13,9 +14,14 @@ export class ShoppingListsComponent implements OnInit {
   shoppingLists = [];
   shoppingListForm: FormGroup;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
-  constructor(private graphql: GraphQLService, private fb: FormBuilder) { }
+  constructor(
+    private graphql: GraphQLService,
+    private fb: FormBuilder,
+    private common: CommonService,
+  ) { }
 
   ngOnInit() {
+    setTimeout(() => this.common.routeName = 'Listes de course');
     this.initForms();
     this.getAllShoppingList();
   }

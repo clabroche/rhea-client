@@ -3,6 +3,7 @@ import { CltThemeService, CltSideBarService, Configuration, CltNotificationsServ
 import { AuthService, AuthError } from '../auth/auth.service';
 import { GraphQLError } from '../graphQL/graphQL.module';
 import { merge } from 'rxjs';
+import { CommonService } from './providers/common.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
     public sidebarService: CltSideBarService,
     public authservice: AuthService,
     private notifService: CltNotificationsService,
+    public common: CommonService,
   ) {
     this.sidebarConf = {
       list: [
@@ -48,6 +50,9 @@ export class AppComponent implements OnInit {
         this.notifService.add(message.title, message.detail);
       }
     });
+  }
+  getName() {
+    return this.common.routeName;
   }
 
 }

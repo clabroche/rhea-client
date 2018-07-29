@@ -1,8 +1,7 @@
 <div id="app-container" *ngIf="authservice.auth; else authPage">
     <clt-sidebar [conf]="sidebarConf"></clt-sidebar>
     <div id="app-content">
-        <clt-navbar>
-            <div left></div>
+        <clt-navbar [name]="getName()">
         </clt-navbar>
         <div id="app-outlet">
             <router-outlet></router-outlet>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CltFormsModule } from 'ngx-callisto/dist';
 import { RheaCardComponent } from './rhea-card/rhea-card.component';
+import { RheaBarBottomComponent } from './rhea-bar-bottom/rhea-bar-bottom.component';
 
 @NgModule({
   imports: [
@@ -10,12 +11,13 @@ import { RheaCardComponent } from './rhea-card/rhea-card.component';
     CltFormsModule,
     ReactiveFormsModule,
   ],
-  declarations: [RheaCardComponent],
+  declarations: [RheaCardComponent, RheaBarBottomComponent],
   exports: [
     CommonModule,
     CltFormsModule,
     ReactiveFormsModule,
-    RheaCardComponent
+    RheaCardComponent,
+    RheaBarBottomComponent
   ]
 })
 export class RheaSdkModule { }

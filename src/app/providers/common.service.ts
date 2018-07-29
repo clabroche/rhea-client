@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ChangeDetectorRef } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -6,4 +6,7 @@ import { Injectable } from '@angular/core';
 export class CommonService {
   routeName: string;
   constructor() { }
+  updateHeader(title: string) {
+    this.routeName = title;
+  }
 }

@@ -1,10 +1,4 @@
-%action-button {
-    padding: 10px;
-    font-size: 2em;
-    background-color: var(--headerBgColorAccent);
-    color: var(--headerTextColor);
-    border: none;
-}
+@import '../../../sdk';
 
 .rhea-container {
     display: flex;
