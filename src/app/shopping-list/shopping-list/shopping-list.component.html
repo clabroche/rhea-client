@@ -1,15 +1,15 @@
 <div class="rhea-container">
   <div class="rhea-content">
-    <rhea-card [title]="item.name" [description]="item.description" *ngFor='let item of items'></rhea-card>
+    <rhea-card [title]="item.name" [description]="item.description" *ngFor='let item of shoppingList?.items'></rhea-card>
   </div>
   <rhea-bar-bottom (action)='addItem()'>
-    {{ items.length }} liste{{items.length ? 's': ''}} au total
+    {{ shoppingList?.items?.length }} liste{{shoppingList?.items?.length ? 's': ''}} au total
   </rhea-bar-bottom>
 </div>
 
 <clt-popup #addPopup title="Ajouter une liste de course">
   <div title>
-    Ajouter une liste de course
+    Ajouter dans la liste
   </div>
   <ng-template clt-popup-body>
     <form [formGroup]="addItemForm">
@@ -19,6 +19,9 @@
       <label>Description</label>
       <input type="text" formControlName="description" [cltValidators]="addItemForm.controls['description']" />
       <clt-form-errors [model]="addItemForm.controls['description']"></clt-form-errors>
+      <label>Quantité</label>
+      <input type="number" formControlName="quantity" [cltValidators]="addItemForm.controls['quantity']" />
+      <clt-form-errors [model]="addItemForm.controls['quantity']"></clt-form-errors>
     </form>
   </ng-template>
 </clt-popup>

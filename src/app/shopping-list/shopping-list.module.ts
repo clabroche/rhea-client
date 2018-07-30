@@ -11,7 +11,7 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
     RheaSdkModule,
     RouterModule.forChild([
       { path: '', component: ShoppingListsComponent },
-      { path: ':id', component: ShoppingListComponent }
+      { path: ':uuid', component: ShoppingListComponent }
     ])
   ],
   declarations: [

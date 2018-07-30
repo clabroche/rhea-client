@@ -53,6 +53,7 @@ export class ShoppingListsComponent implements OnInit {
   addShoppingList() {
     return this.addPopup.bindForm(this.shoppingListForm).open().subscribe(async result => {
       this.resetForms();
+      if (!result) return;
       result = this.graphql.stringifyWithoutPropertiesQuote(result);
       const { shoppingListCreate } = await this.graphql.mutation(`
         shoppingListCreate(input: ${result}) {uuid}
