@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CltPopupComponent } from 'ngx-callisto/dist';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { ActivatedRoute } from '@angular/router';
+import { CommonService } from '../../providers/common.service';
 
 @Component({
   selector: 'shopping-list',
@@ -18,7 +19,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private graphql: GraphQLService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private common: CommonService
   ) {
     this.sub = this.route.params.subscribe(params => {
       this.uuid = params['uuid'];
@@ -43,11 +45,13 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   async getAllItems() {
     const shoppingList = await this.graphql.query(`
       shoppingListById(uuid: "${this.uuid}") {
+        uuid, name
         items {
           uuid, name, description, quantity
         }
       }
     `).then(({ shoppingListById }) => shoppingListById);
+    this.common.routeName = shoppingList.name;
     if (!shoppingList) return;
     this.shoppingList = shoppingList;
   }
