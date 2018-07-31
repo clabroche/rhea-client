@@ -3,8 +3,7 @@
     <rhea-card 
       [title]="item.name" 
       [description]="item.description"
-      [circleText]="item.quantity" 
-      [additionalText]="item.done"
+      [circleText]="item.quantity - item.done" 
       [quantity]='item.quantity'
       [done]="item.done"
       *ngFor='let item of shoppingList?.items' 
