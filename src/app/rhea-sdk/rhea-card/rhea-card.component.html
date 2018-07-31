@@ -10,8 +10,8 @@
     </div>
   </div>
   <div class="rhea-card-actions" *ngIf="!noAction">
-    <i class="rhea-card-action" *ngIf="additionalText"> {{additionalText}}</i>
-    <div class="rhea-card-action circle" *ngIf="circleText">{{circleText}}</div>
+    <i class="rhea-card-action" *ngIf="additionalText !== undefined"> {{additionalText}}</i>
+    <div class="rhea-card-action circle" *ngIf="circleText !== undefined">{{circleText}}</div>
     <i
       class="rhea-card-action {{actionIcon ? actionIcon : 'fas fa-sliders-h'}}" 
       *ngIf="!noAction"  

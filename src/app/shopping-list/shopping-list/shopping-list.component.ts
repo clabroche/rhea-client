@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CltPopupComponent } from 'ngx-callisto/dist';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
@@ -47,7 +47,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       shoppingListById(uuid: "${this.uuid}") {
         uuid, name
         items {
-          uuid, name, description, quantity
+          uuid, name, description, quantity, done
         }
       }
     `).then(({ shoppingListById }) => shoppingListById);
@@ -69,4 +69,12 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     });
   }
 
+  doneIncrement(item) {
+    this.graphql.mutation(`
+      shoppingListAddItem(listUuid: "${this.uuid}", input: ${this.graphql.stringifyWithoutPropertiesQuote({
+        name: item.name, done: item.done + 1, quantity: item.quantity
+      })}) {
+        uuid
+      }`).then(_ => this.getAllItems());
+  }
 }

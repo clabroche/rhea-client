@@ -1,6 +1,12 @@
 <div class="rhea-container">
   <div class="rhea-content">
-    <rhea-card [title]="item.name" [description]="item.description" *ngFor='let item of shoppingList?.items'></rhea-card>
+    <rhea-card 
+      [title]="item.name" 
+      [description]="item.description"
+      [circleText]="item.quantity" 
+      [additionalText]="item.done"
+      *ngFor='let item of shoppingList?.items' 
+      (click)="doneIncrement(item)"></rhea-card>
   </div>
   <rhea-bar-bottom (action)='addItem()'>
     {{ shoppingList?.items?.length }} liste{{shoppingList?.items?.length ? 's': ''}} au total

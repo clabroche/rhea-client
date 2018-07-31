@@ -14,3 +14,16 @@ a {
 input{
     margin-bottom: 0;
 }
+clt-side-panel {
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      border-bottom: var(--contentBorderWidth) solid var(--contentBorderColor);
+      padding: 10px;
+      &:last-of-type {
+        border-bottom: none;
+      }
+    }
+  }
+}
