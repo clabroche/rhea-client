@@ -54,8 +54,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     `).then(({ shoppingListById }) => shoppingListById);
     this.common.routeName = shoppingList.name;
     if (!shoppingList) return;
-    if(this.shoppingList)
-    console.log(this.cltCommon.differences(this.shoppingList, shoppingList))
+    if (this.shoppingList)
+    console.log(this.cltCommon.differences(this.shoppingList, shoppingList));
     this.shoppingList = shoppingList;
   }
 
