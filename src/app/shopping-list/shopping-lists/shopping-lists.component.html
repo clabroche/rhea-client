@@ -5,7 +5,7 @@
       <rhea-card
         [uuid]='shoppingList'
         [title]="shoppingList.name"
-        [description]="shoppingList.description"
+        description="{{shoppingList.createdAt | date:'d MMM y'}} {{shoppingList.description ? '-' : ''}} {{shoppingList.description}}"
         [noCheckBox]="true"
         (action)="openActionMenu($event)"
       ></rhea-card>

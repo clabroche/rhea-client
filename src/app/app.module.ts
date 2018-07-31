@@ -10,7 +10,9 @@ import { AuthModule } from '../auth/auth.module';
 import { AuthPageComponent } from './authPage/authPage.component';
 import { AuthService } from '../auth/auth.service';
 import { RheaSdkModule } from './rhea-sdk/rhea-sdk.module';
-
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [
     AppComponent,

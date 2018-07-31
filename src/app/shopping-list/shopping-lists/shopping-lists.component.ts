@@ -71,6 +71,7 @@ export class ShoppingListsComponent implements OnInit {
         uuid
         name
         description
+        createdAt
         items {
           uuid
           name
@@ -78,8 +79,11 @@ export class ShoppingListsComponent implements OnInit {
         }
       }
     `).then(({ shoppingLists }) => {
-        this.shoppingLists = shoppingLists;
+      this.shoppingLists = shoppingLists.map(shoppingList => {
+        shoppingList.createdAt = new Date(shoppingList.createdAt);
+        return shoppingList;
       });
+    });
   }
   addShoppingList() {
     return this.addPopup.bindForm(this.shoppingListForm).open().subscribe(async result => {
@@ -89,7 +93,6 @@ export class ShoppingListsComponent implements OnInit {
       const { shoppingListCreate } = await this.graphql.mutation(`
         shoppingListCreate(input: ${result}) {uuid}
       `);
-      console.log(shoppingListCreate);
       return this.getAllShoppingList();
     });
   }
