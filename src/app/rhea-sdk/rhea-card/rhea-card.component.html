@@ -1,5 +1,5 @@
 <div class="rhea-card">
-  <div class="rhea-card-check {{checked ? 'checked' : ''}}" (click)="toggleCheck()">
+  <div *ngIf='!noCheckBox' class="rhea-card-check {{checked ? 'checked' : ''}}" (click)="toggleCheck()">
   </div>
   <div class="rhea-card-content">
     <div class="rhea-card-title" *ngIf="title">

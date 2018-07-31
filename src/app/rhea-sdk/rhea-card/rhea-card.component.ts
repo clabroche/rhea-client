@@ -18,6 +18,7 @@ export class RheaCardComponent {
   @Input() circleText: string;
   @Input() actionIcon: string;
   @Input() noAction = false;
+  @Input() noCheckBox = false;
   @Input() checked = false;
   @Output() checkedChange = new EventEmitter();
   @Output() action = new EventEmitter();
