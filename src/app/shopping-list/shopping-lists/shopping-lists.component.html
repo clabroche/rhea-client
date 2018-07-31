@@ -3,9 +3,11 @@
   <div class="rhea-content">
     <a routerLink="./{{shoppingList.uuid}}" *ngFor='let shoppingList of shoppingLists'>
       <rhea-card
+        [uuid]='shoppingList'
         [title]="shoppingList.name"
         [description]="shoppingList.description"
         [noCheckBox]="true"
+        (action)="openActionMenu($event)"
       ></rhea-card>
     </a>
   </div>
@@ -29,3 +31,16 @@
     </form>
   </ng-template>
 </clt-popup>
+
+<clt-side-panel #actionMenu direction="bottom" [noActions]="true">
+  <div title>
+    {{actionMenu.context?.name}}
+  </div>
+  <div *clt-popup-body>
+    <ul>
+      <li (click)="updateItem(actionMenu.context)">Modification dans la liste</li>
+      <li>Modification</li>
+      <li (click)="deleteItem(actionMenu.context)">Suppression</li>
+    </ul>
+  </div>
+</clt-side-panel>

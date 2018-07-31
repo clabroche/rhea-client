@@ -10,17 +10,4 @@
         overflow-y: auto;
         overflow-x: hidden;
     }
-    .rhea-bar-bottom {
-        background-color: #fff;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top: 2px solid var(--headerBgColor);
-        .rhea-bar-content {
-            padding: 10px;
-        }
-        .action-button {
-            @extend %action-button;
-        }
-    }
 }

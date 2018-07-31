@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CltPopupComponent } from 'ngx-callisto/dist';
+import { CltPopupComponent, CltSidePanelComponent } from 'ngx-callisto/dist';
 import { CommonService } from '../../providers/common.service';
 
 @Component({
@@ -14,6 +14,7 @@ export class ShoppingListsComponent implements OnInit {
   shoppingLists = [];
   shoppingListForm: FormGroup;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
+  @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
   constructor(
     private graphql: GraphQLService,
     private fb: FormBuilder,
@@ -33,6 +34,29 @@ export class ShoppingListsComponent implements OnInit {
   }
   resetForms() {
     this.shoppingListForm.reset();
+  }
+  openActionMenu(event) {
+    const i = this.shoppingLists.indexOf(event);
+    this.actionMenu.title = event.name;
+    this.actionMenu.open(event);
+  }
+
+  updateItem(shoppingList) {
+    this.actionMenu.close();
+    this.shoppingListForm.patchValue(shoppingList);
+    this.addPopup.bindForm(this.shoppingListForm).open(shoppingList).subscribe(result => {
+      if (!result) return;
+      this.graphql.mutation(`
+        shoppingListUpdate(uuid:"${shoppingList.uuid}", input: ${this.graphql.stringifyWithoutPropertiesQuote(result)}) {
+          uuid
+        }
+      `).then(_ => {
+        return this.getAllShoppingList();
+      });
+    });
+  }
+  deleteItem(shoppingList) {
+
   }
   getAllShoppingList() {
     this.graphql.query(`
