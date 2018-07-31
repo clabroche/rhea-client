@@ -36,7 +36,7 @@ export class GraphQLService {
         if (!result) return {};
         if (result.hasOwnProperty('errors')) return Promise.reject(result.errors);
         return this.transform(cloneDeep(result.data));
-      })
+      });
   }
 
   /**

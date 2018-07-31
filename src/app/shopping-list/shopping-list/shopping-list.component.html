@@ -5,6 +5,8 @@
       [description]="item.description"
       [circleText]="item.quantity" 
       [additionalText]="item.done"
+      [quantity]='item.quantity'
+      [done]="item.done"
       *ngFor='let item of shoppingList?.items' 
       (click)="doneIncrement(item)"></rhea-card>
   </div>

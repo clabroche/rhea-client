@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CltPopupComponent } from 'ngx-callisto/dist';
+import { CltPopupComponent, CltCommonService } from 'ngx-callisto/dist';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../providers/common.service';
@@ -20,7 +20,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private graphql: GraphQLService,
     private route: ActivatedRoute,
-    private common: CommonService
+    private common: CommonService,
+    private cltCommon: CltCommonService
   ) {
     this.sub = this.route.params.subscribe(params => {
       this.uuid = params['uuid'];
@@ -53,6 +54,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     `).then(({ shoppingListById }) => shoppingListById);
     this.common.routeName = shoppingList.name;
     if (!shoppingList) return;
+    if(this.shoppingList)
+    console.log(this.cltCommon.differences(this.shoppingList, shoppingList))
     this.shoppingList = shoppingList;
   }
 
@@ -70,11 +73,14 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   doneIncrement(item) {
+    const i = this.shoppingList.items.indexOf(item);
     this.graphql.mutation(`
       shoppingListAddItem(listUuid: "${this.uuid}", input: ${this.graphql.stringifyWithoutPropertiesQuote({
         name: item.name, done: item.done + 1, quantity: item.quantity
       })}) {
-        uuid
-      }`).then(_ => this.getAllItems());
+        done
+      }`).then(({ shoppingListAddItem }) => {
+        this.shoppingList.items[i].done = shoppingListAddItem.done;
+      });
   }
 }

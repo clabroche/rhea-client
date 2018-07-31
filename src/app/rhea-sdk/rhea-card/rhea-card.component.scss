@@ -5,7 +5,12 @@
     justify-content: space-between;
     align-items: center;
     background-color: #fff;
+    position: relative;
     box-shadow: 0px 0px 7px var(--contentBorderColor);
+    .ui.top.attached.progress {
+        position: absolute;
+        width: 100%
+    }
     .rhea-card-check {
         width: 30px;
         height: 30px;

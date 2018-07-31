@@ -30,10 +30,13 @@
     "core-js": "^2.5.4",
     "graphql": "0.13.0",
     "graphql-tag": "^2.9.2",
+    "jquery": "^3.3.1",
     "jwt-decode": "^2.2.0",
     "ngx-callisto": "git+ssh://git@github.com/clabroche/ngx-callisto.git#v4.0.6",
     "ol": "^5.1.3",
     "rxjs": "^6.0.0",
+    "semantic-ui-progress": "^2.3.1",
+    "uuid": "^3.3.2",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
