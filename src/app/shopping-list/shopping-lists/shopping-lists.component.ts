@@ -14,6 +14,7 @@ export class ShoppingListsComponent implements OnInit {
   shoppingLists = [];
   shoppingListForm: FormGroup;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
+  @ViewChild('deletePopup') deletePopup: CltPopupComponent;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
   constructor(
     private graphql: GraphQLService,
@@ -56,7 +57,13 @@ export class ShoppingListsComponent implements OnInit {
     });
   }
   deleteItem(shoppingList) {
-
+    this.actionMenu.close();
+    this.deletePopup.open().subscribe(result => {
+      if (!result) return;
+      return this.graphql.mutation(`
+        shoppingListDelete(uuid: "${shoppingList.uuid}")
+      `).then(_ => this.getAllShoppingList());
+    });
   }
   getAllShoppingList() {
     this.graphql.query(`
