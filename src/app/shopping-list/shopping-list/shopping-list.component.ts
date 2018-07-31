@@ -76,7 +76,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   doneIncrement(item) {
     const i = this.shoppingList.items.indexOf(item);
-    if(item.quantity)
+    if (item.quantity)
     this.graphql.mutation(`
       shoppingListAddItem(listUuid: "${this.uuid}", input: ${this.graphql.stringifyWithoutPropertiesQuote({
         name: item.name, done: item.done + 1, quantity: item.quantity
