@@ -6,9 +6,11 @@
       [circleText]="item.quantity - item.done" 
       [quantity]='item.quantity'
       [done]="item.done"
+      [checked]='item.done === item.quantity'
       *ngFor='let item of shoppingList?.items' 
       (click)="doneIncrement(item)"
       (action)="openActionMenu(item)"
+      (checkedChange)="doneIncrement(item, $event)"
       ></rhea-card>
   </div>
   <rhea-bar-bottom (action)='addItem()'>

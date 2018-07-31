@@ -74,8 +74,9 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     });
   }
 
-  doneIncrement(item) {
+  doneIncrement(item, checkedStatus) {
     const i = this.shoppingList.items.indexOf(item);
+    if (checkedStatus && checkedStatus.checked) item.done = item.quantity - 1;
     if (item.quantity)
     this.graphql.mutation(`
       shoppingListAddItem(listUuid: "${this.uuid}", input: ${this.graphql.stringifyWithoutPropertiesQuote({
