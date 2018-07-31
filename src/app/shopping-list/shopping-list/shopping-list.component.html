@@ -7,7 +7,9 @@
       [quantity]='item.quantity'
       [done]="item.done"
       *ngFor='let item of shoppingList?.items' 
-      (click)="doneIncrement(item)"></rhea-card>
+      (click)="doneIncrement(item)"
+      (action)="openActionMenu(item)"
+      ></rhea-card>
   </div>
   <rhea-bar-bottom (action)='addItem()'>
     {{ shoppingList?.items?.length }} item{{shoppingList?.items?.length ? 's': ''}} au total
@@ -32,3 +34,22 @@
     </form>
   </ng-template>
 </clt-popup>
+
+<clt-popup #deletePopup body="Voulez-vous vraiment supprimer cette item ?">
+  <div title>
+    Supprimer un item
+  </div>
+</clt-popup>
+
+<clt-side-panel #actionMenu direction="bottom" [noActions]="true">
+  <div title>
+    {{actionMenu.context?.name}}
+  </div>
+  <div *clt-popup-body>
+    <ul>
+      <li (click)="updateItem(actionMenu.context)">Modification dans la liste</li>
+      <li>Modification</li>
+      <li (click)="deleteItem(actionMenu.context)">Suppression</li>
+    </ul>
+  </div>
+</clt-side-panel>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CltPopupComponent, CltCommonService } from 'ngx-callisto/dist';
+import { CltPopupComponent, CltCommonService, CltSidePanelComponent } from 'ngx-callisto/dist';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../providers/common.service';
@@ -16,6 +16,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   addItemForm: FormGroup;
   sub;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
+  @ViewChild('deletePopup') deletePopup: CltPopupComponent;
+  @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
   constructor(
     private fb: FormBuilder,
     private graphql: GraphQLService,
@@ -74,6 +76,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   doneIncrement(item) {
     const i = this.shoppingList.items.indexOf(item);
+    if(item.quantity)
     this.graphql.mutation(`
       shoppingListAddItem(listUuid: "${this.uuid}", input: ${this.graphql.stringifyWithoutPropertiesQuote({
         name: item.name, done: item.done + 1, quantity: item.quantity
@@ -82,5 +85,37 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       }`).then(({ shoppingListAddItem }) => {
         this.shoppingList.items[i].done = shoppingListAddItem.done;
       });
+  }
+
+
+  openActionMenu(event) {
+    const i = this.shoppingList.items.indexOf(event);
+    this.actionMenu.title = event.name;
+    this.actionMenu.open(event);
+  }
+
+  updateItem(item) {
+    this.actionMenu.close();
+    this.addItemForm.patchValue(item);
+    this.addPopup.bindForm(this.addItemForm).open(item).subscribe(result => {
+      if (!result) return;
+      result.done = item.done;
+      this.graphql.mutation(`
+        shoppingListAddItem(listUuid:"${this.uuid}", input:${this.graphql.stringifyWithoutPropertiesQuote(result)}) {
+          uuid
+        }
+      `).then(_ => {
+          return this.getAllItems();
+        });
+    });
+  }
+  deleteItem(item) {
+    this.actionMenu.close();
+    this.deletePopup.open().subscribe(result => {
+      if (!result) return;
+      return this.graphql.mutation(`
+        shoppingListRemoveItem(listUuid: "${this.uuid}", itemUuid: "${item.uuid}")
+      `).then(_ => this.getAllItems());
+    });
   }
 }
