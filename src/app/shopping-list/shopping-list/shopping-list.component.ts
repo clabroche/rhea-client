@@ -12,6 +12,7 @@ import { CommonService } from '../../providers/common.service';
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
   shoppingList;
+  items;
   uuid;
   addItemForm: FormGroup;
   sub;
@@ -27,12 +28,15 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   ) {
     this.sub = this.route.params.subscribe(params => {
       this.uuid = params['uuid'];
-      this.getAllItems();
     });
   }
 
   ngOnInit() {
     this.initForms();
+    Promise.all([
+      this.getShoppingList(),
+      this.getAllItems(),
+    ]).then(data => data);
   }
   ngOnDestroy() {
     this.sub.unsubscribe();
@@ -44,8 +48,15 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       quantity: [1, Validators.required]
     });
   }
-
   async getAllItems() {
+    const items = await this.graphql.query(`
+      items { name }
+    `).then((data) => data.items);
+    if (!items) return;
+    this.items = items;
+  }
+
+  async getShoppingList() {
     const shoppingList = await this.graphql.query(`
       shoppingListById(uuid: "${this.uuid}") {
         uuid, name
@@ -56,8 +67,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     `).then(({ shoppingListById }) => shoppingListById);
     this.common.routeName = shoppingList.name;
     if (!shoppingList) return;
-    if (this.shoppingList)
-    console.log(this.cltCommon.differences(this.shoppingList, shoppingList));
     this.shoppingList = shoppingList;
   }
 
@@ -70,7 +79,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
           uuid
         }
       `);
-      await this.getAllItems();
+      await this.getShoppingList();
     });
   }
 
@@ -106,7 +115,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
           uuid
         }
       `).then(_ => {
-          return this.getAllItems();
+          return this.getShoppingList();
         });
     });
   }
@@ -116,7 +125,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       if (!result) return;
       return this.graphql.mutation(`
         shoppingListRemoveItem(listUuid: "${this.uuid}", itemUuid: "${item.uuid}")
-      `).then(_ => this.getAllItems());
+      `).then(_ => this.getShoppingList());
     });
   }
 }

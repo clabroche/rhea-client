@@ -25,7 +25,11 @@
   <ng-template clt-popup-body>
     <form [formGroup]="addItemForm">
       <label>Nom</label>
-      <input type="text" formControlName="name" [cltValidators]="addItemForm.controls['name']" />
+      <input 
+        type="text"
+        formControlName="name"
+        [cltValidators]="addItemForm.controls['name']"
+        cltAutocomplete [source]="items" property="name" [model]="addItemForm.controls['name']"/>
       <clt-form-errors [model]="addItemForm.controls['name']"></clt-form-errors>
       <label>Description</label>
       <input type="text" formControlName="description" [cltValidators]="addItemForm.controls['description']" />

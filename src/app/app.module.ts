@@ -16,7 +16,7 @@ registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [
     AppComponent,
-    AuthPageComponent
+    AuthPageComponent,
   ],
   imports: [
     BrowserModule,
