@@ -1,5 +1,8 @@
 <div class="rhea-card">
-  <div class="ui top attached progress" id='progress-{{progressUuid}}'>
+  <div 
+    class="ui top attached progress"
+    id='progress-{{progressUuid}}'
+    *ngIf="done !== undefined && quantity !== undefined">
     <div class="bar"></div>
   </div>
   <div *ngIf='!noCheckBox' class="rhea-card-check {{checked ? 'checked' : ''}}" (click)="toggleCheck()">
