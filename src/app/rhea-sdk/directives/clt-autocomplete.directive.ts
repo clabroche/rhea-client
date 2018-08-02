@@ -4,11 +4,8 @@ import {
   Renderer2,
   ElementRef,
   OnInit,
-  ChangeDetectorRef,
-  ApplicationRef
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { runInThisContext } from 'vm';
 
 @Directive({
   selector: '[cltAutocomplete]'
@@ -24,8 +21,6 @@ export class CltAutocompleteDirective implements OnInit {
   constructor(
     private renderer: Renderer2,
     private el: ElementRef,
-    private cdr: ChangeDetectorRef,
-    private appref: ApplicationRef,
   ) { }
 
   ngOnInit() {
