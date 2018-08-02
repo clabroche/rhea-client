@@ -24,7 +24,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     private graphql: GraphQLService,
     private route: ActivatedRoute,
     private common: CommonService,
-    private cltCommon: CltCommonService
   ) {
     this.sub = this.route.params.subscribe(params => {
       this.uuid = params['uuid'];
@@ -61,7 +60,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       shoppingListById(uuid: "${this.uuid}") {
         uuid, name
         items {
-          uuid, name, description, quantity, done
+          uuid, name, description, quantity, done, price
         }
       }
     `).then(({ shoppingListById }) => shoppingListById);

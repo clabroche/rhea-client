@@ -90,7 +90,7 @@ export class ShoppingListsComponent implements OnInit {
       this.resetForms();
       if (!result) return;
       result = this.graphql.stringifyWithoutPropertiesQuote(result);
-      const { shoppingListCreate } = await this.graphql.mutation(`
+      await this.graphql.mutation(`
         shoppingListCreate(input: ${result}) {uuid}
       `);
       return this.getAllShoppingList();
