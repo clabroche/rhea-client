@@ -12,6 +12,7 @@ import { AuthService } from '../auth/auth.service';
 import { RheaSdkModule } from './rhea-sdk/rhea-sdk.module';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { ItemModule } from './item/item.module';
 registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ registerLocaleData(localeFr, 'fr');
     CltOverlayModule.forRoot(),
     RheaSdkModule,
     CltFormsModule,
+    ItemModule,
     RouterModule.forRoot([
       { path: '', resolve: { authService: AuthService }, children: [
           { path: '', redirectTo: '/shoppingLists', pathMatch: 'full'},
