@@ -1,3 +1,16 @@
-<p>
-  items works!
-</p>
+<div class="rhea-container">
+  <div class="rhea-content">
+    <rhea-card *ngFor='let item of items'
+      [title]="item.name"
+      [noCheckBox]="true"
+      actionIcon="far fa-times-circle"
+      (action)="deleteItem(item.uuid)"
+    ></rhea-card>
+  </div>
+</div>
+
+<clt-popup #deletePopup body="Voulez-vous vraiment supprimer cet item ?">
+  <div title>
+    Supprimer un item
+  </div>
+</clt-popup>
