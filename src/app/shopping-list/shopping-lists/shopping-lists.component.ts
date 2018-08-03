@@ -29,6 +29,7 @@ export class ShoppingListsComponent implements OnInit {
     setInterval(_=>{
       this.getAllShoppingList();
     }, this.common.refreshInterval)
+    this.getAllShoppingList();
   }
   initForms() {
     this.shoppingListForm = this.fb.group({
