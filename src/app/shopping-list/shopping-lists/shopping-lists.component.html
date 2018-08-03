@@ -40,6 +40,7 @@
 
 <clt-side-panel #actionMenu direction="bottom" [noActions]="true">
   <div title>
+    {{actionMenu.context | json}}
     {{actionMenu.context?.name}}
   </div>
   <div *clt-popup-body>

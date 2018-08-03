@@ -29,6 +29,7 @@
     "apollo-link": "^1.2.2",
     "apollo-link-error": "^1.1.0",
     "core-js": "^2.5.4",
+    "fast-sort": "^1.5.3",
     "graphql": "0.13.0",
     "graphql-tag": "^2.9.2",
     "jquery": "^3.3.1",
