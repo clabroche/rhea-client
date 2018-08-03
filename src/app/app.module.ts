@@ -26,11 +26,12 @@ registerLocaleData(localeFr, 'fr');
     CltOverlayModule.forRoot(),
     RheaSdkModule,
     CltFormsModule,
-    ItemModule,
     RouterModule.forRoot([
       { path: '', resolve: { authService: AuthService }, children: [
           { path: '', redirectTo: '/shoppingLists', pathMatch: 'full'},
-          { path: 'shoppingLists', loadChildren: 'src/app/shopping-list/shopping-list.module#ShoppingListModule'}
+          { path: 'shoppingLists', loadChildren: 'src/app/shopping-list/shopping-list.module#ShoppingListModule'},
+          { path: 'categories', loadChildren: 'src/app/category/category.module#CategoryModule'},
+          { path: 'items', loadChildren: 'src/app/item/item.module#ItemModule'}
         ]
       }
     ]),

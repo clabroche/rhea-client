@@ -14,8 +14,8 @@ import { CltOverlayModule, CltFormsModule, CltContainersModule } from 'ngx-calli
     CltFormsModule,
     CltContainersModule,
     RouterModule.forChild([
-      { path: 'items', component: ItemsComponent },
-      {path:'items/:uuid', component: ItemComponent},
+      { path: '', component: ItemsComponent },
+      {path:':uuid', component: ItemComponent},
     ])
   ],
   declarations: [ItemComponent, ItemsComponent]
