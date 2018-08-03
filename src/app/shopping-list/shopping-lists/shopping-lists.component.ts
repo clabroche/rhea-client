@@ -3,6 +3,7 @@ import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CltPopupComponent, CltSidePanelComponent } from 'ngx-callisto/dist';
 import { CommonService } from '../../providers/common.service';
+import { TouchSequence } from 'selenium-webdriver';
 
 @Component({
   selector: 'shopping-lists',
@@ -25,7 +26,9 @@ export class ShoppingListsComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => this.common.routeName = 'Listes de course');
     this.initForms();
-    this.getAllShoppingList();
+    setInterval(_=>{
+      this.getAllShoppingList();
+    }, this.common.refreshInterval)
   }
   initForms() {
     this.shoppingListForm = this.fb.group({
@@ -79,10 +82,13 @@ export class ShoppingListsComponent implements OnInit {
         }
       }
     `).then(({ shoppingLists }) => {
-      this.shoppingLists = shoppingLists.map(shoppingList => {
+      shoppingLists = shoppingLists.map(shoppingList => {
         shoppingList.createdAt = new Date(shoppingList.createdAt);
         return shoppingList;
       });
+      if(this.shoppingLists.length > shoppingLists.length) this.shoppingLists = shoppingLists;
+      else this.shoppingLists = this.common.merge(this.shoppingLists, shoppingLists);
+      return this.shoppingLists;
     });
   }
   addShoppingList() {
