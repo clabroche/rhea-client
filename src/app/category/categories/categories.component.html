@@ -14,7 +14,7 @@
 
 <clt-popup #addPopup width="95vw">
   <div title>
-    Ajouter une catégorie
+    {{addPopup.context?.title}}
   </div>
   <ng-template clt-popup-body>
     <form [formGroup]="addCategoryForm">
@@ -23,16 +23,21 @@
       <clt-form-errors [model]="addCategoryForm.controls['name']"></clt-form-errors>
 
       <p-table [value]="items" [(selection)]="selectedItems" dataKey="uuid" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="caption">
+          Items associés
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th class="checkbox"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
             <th>Item</th>
+            <th>Catégorie</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
           <tr>
             <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
             <td>{{item.name}}</td>
+            <td>{{item.category?.name}}</td>
           </tr>
         </ng-template>
       </p-table>

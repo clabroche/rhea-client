@@ -44,18 +44,26 @@ export class CategoriesComponent implements OnInit {
   async getCategories() {
     const {categories} = await this.graphql.query(`categories { 
       uuid, name, 
-      items { uuid }
+      items { 
+        uuid
+      }
     }`)
     if(!categories) return;
     this.categories = this.common.merge(this.categories, categories);
   }
   async getAllItems() {
-    return this.items = (await this.graphql.query(`items {name, description, uuid}`)).items || []
+    return this.items = (await this.graphql.query(`items {
+      name, description, uuid, 
+      category { name }
+    }`)).items || []
   }
   async addCategory() {
     this.actionMenu.close();
+    this.initForms()
+    this.selectedItems = [];
     await this.getAllItems();
-    this.addPopup.bindForm(this.addCategoryForm).open().subscribe(result=>{
+    const title = "Ajout d'une catégorie"
+    this.addPopup.bindForm(this.addCategoryForm).open({title}).subscribe(result=>{
       if(!result) return;
       result.itemUuids = this.selectedItems.map(item=>item.uuid)
       this.graphql.mutation(`
@@ -63,8 +71,6 @@ export class CategoriesComponent implements OnInit {
           uuid, name
         }
       `).then(_=>{
-        this.selectedItems = [];
-        this.initForms()
         return this.getCategories()
       })
     })
@@ -72,10 +78,13 @@ export class CategoriesComponent implements OnInit {
 
   async updateCategory(category) {
     this.actionMenu.close();
+    this.initForms()
+    this.selectedItems = [];
     this.addCategoryForm.patchValue(category);
     await this.getAllItems();
     this.selectedItems = category.items
-    this.addPopup.bindForm(this.addCategoryForm).open(category).subscribe(result => {
+    const title = "Modification d'une catégorie"
+    this.addPopup.bindForm(this.addCategoryForm).open({ category, title}).subscribe(result => {
       if (!result) return;
       result.itemUuids = this.selectedItems.map(item => item.uuid)
       this.graphql.mutation(`
@@ -83,8 +92,6 @@ export class CategoriesComponent implements OnInit {
           uuid
         }
       `).then(_ => {
-        this.selectedItems = [];
-        this.initForms()
         return this.getCategories();
       });
     });
