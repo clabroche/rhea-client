@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { CltPopupComponent, CltSidePanelComponent } from 'ngx-callisto/dist';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
@@ -9,11 +9,12 @@ import { CommonService } from '../../providers/common.service';
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss']
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent implements OnInit, OnDestroy {
   categories = [];
   items = [];
   addCategoryForm: FormGroup;
   selectedItems = [];
+  timer;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
   @ViewChild('deletePopup') deletePopup: CltPopupComponent;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
@@ -27,7 +28,13 @@ export class CategoriesComponent implements OnInit {
   ngOnInit() {
     this.initForms()
     setTimeout(() => this.common.routeName = 'Categories');
+    this.timer = setInterval(() => {
+      this.getCategories();
+    }, this.common.refreshInterval);
     this.getCategories();
+  }
+  ngOnDestroy() {
+    clearInterval(this.timer)
   }
 
   initForms() {

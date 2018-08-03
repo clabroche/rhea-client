@@ -12,7 +12,7 @@ export class CommonService {
     this.routeName = title;
   }
   merge(srcToKeep, value) {
-    if(Array.isArray(srcToKeep) && srcToKeep.length > value) return value;
+    if(Array.isArray(srcToKeep) && srcToKeep.length > value.length) return value;
     return _merge(srcToKeep, value, (value, srcValue) => {
       if (Array.isArray(value) && srcValue.length < value.length)
         return srcValue
