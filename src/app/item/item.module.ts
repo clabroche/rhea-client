@@ -12,7 +12,8 @@ import { CltOverlayModule } from 'ngx-callisto/dist';
     RheaSdkModule,
     CltOverlayModule,
     RouterModule.forChild([
-      {path:'items', component: ItemsComponent}
+      { path: 'items', component: ItemsComponent },
+      {path:'items/:uuid', component: ItemComponent},
     ])
   ],
   declarations: [ItemComponent, ItemsComponent]

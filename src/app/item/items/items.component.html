@@ -5,6 +5,7 @@
       [noCheckBox]="true"
       actionIcon="far fa-times-circle"
       (action)="deleteItem(item.uuid)"
+      routerLink='/items/{{item.uuid}}'
     ></rhea-card>
   </div>
 </div>
