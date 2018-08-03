@@ -4,7 +4,8 @@ import { CltPopupComponent, CltCommonService, CltSidePanelComponent } from 'ngx-
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../providers/common.service';
-import { merge as _merge } from 'lodash';
+import { mergeWith as _merge } from 'lodash';
+import { valueFromAST } from 'graphql';
 
 @Component({
   selector: 'shopping-list',
@@ -76,7 +77,10 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       }
     `).then(({ shoppingListById }) => shoppingListById);
     this.common.routeName = shoppingList.name;
-    this.shoppingList = _merge(this.shoppingList, shoppingList)
+    this.shoppingList = _merge(this.shoppingList, shoppingList, (value, srcValue, key, object, source)=>{
+      if(Array.isArray(value) && srcValue.length < value.length) 
+        return srcValue
+    })
   }
 
   addItem() {
