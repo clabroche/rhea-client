@@ -35,7 +35,8 @@ export class RheaCardComponent implements OnChanges {
   ngOnChanges() {
     setTimeout(() => {
       $('#progress-' + this.progressUuid.toString()).progress({
-        percent: (this.done * 100) / this.quantity
+        percent: (this.done * 100) / this.quantity,
+        showActivity: false
       });
     });
   }

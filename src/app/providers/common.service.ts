@@ -5,6 +5,7 @@ import { Injectable, ChangeDetectorRef } from '@angular/core';
 })
 export class CommonService {
   routeName: string;
+  refreshInterval = 500;
   constructor() { }
   updateHeader(title: string) {
     this.routeName = title;

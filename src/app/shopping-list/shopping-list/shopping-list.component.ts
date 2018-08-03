@@ -4,6 +4,7 @@ import { CltPopupComponent, CltCommonService, CltSidePanelComponent } from 'ngx-
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../providers/common.service';
+import { merge as _merge } from 'lodash';
 
 @Component({
   selector: 'shopping-list',
@@ -16,6 +17,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   uuid;
   addItemForm: FormGroup;
   sub;
+  timer;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
   @ViewChild('deletePopup') deletePopup: CltPopupComponent;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
@@ -24,6 +26,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     private graphql: GraphQLService,
     private route: ActivatedRoute,
     private common: CommonService,
+    private cltcommon: CltCommonService
   ) {
     this.sub = this.route.params.subscribe(params => {
       this.uuid = params['uuid'];
@@ -32,13 +35,20 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initForms();
+    this.timer = setInterval(_ => {
+      Promise.all([
+        this.getShoppingList(),
+        this.getAllItems(),
+      ]);
+    }, this.common.refreshInterval);
     Promise.all([
       this.getShoppingList(),
       this.getAllItems(),
-    ]).then(data => data);
+    ]);
   }
   ngOnDestroy() {
     this.sub.unsubscribe();
+    clearInterval(this.timer);
   }
   initForms() {
     this.addItemForm = this.fb.group({
@@ -52,7 +62,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       items { name }
     `).then((data) => data.items);
     if (!items) return;
-    this.items = items;
+    if (!this.items) return this.items = items;
+    if (!this.cltcommon.equalityObjects(items, this.items)) this.items = items;
   }
 
   async getShoppingList() {
@@ -65,8 +76,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       }
     `).then(({ shoppingListById }) => shoppingListById);
     this.common.routeName = shoppingList.name;
-    if (!shoppingList) return;
-    this.shoppingList = shoppingList;
+    this.shoppingList = _merge(this.shoppingList, shoppingList)
   }
 
   addItem() {
@@ -79,6 +89,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         }
       `);
       await this.getShoppingList();
+      return this.getAllItems();
     });
   }
 
