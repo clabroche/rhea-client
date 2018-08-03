@@ -58,7 +58,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
   async getAllItems() {
     const items = await this.graphql.query(`
-      items { name }
+      items { name, description, price}
     `).then((data) => data.items);
     if (!items) return;
     if (!this.items) return this.items = items;
@@ -74,6 +74,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         }
       }
     `).then(({ shoppingListById }) => shoppingListById);
+    console.log(shoppingList.items)
     this.common.routeName = shoppingList.name;
     this.shoppingList = this.common.merge(this.shoppingList, shoppingList);
   }

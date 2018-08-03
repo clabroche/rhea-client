@@ -1,3 +1,24 @@
-<p>
-  item works!
-</p>
+<div class="rhea-container">
+  <div class="rhea-content">
+    <clt-panel>
+      <form (submit)="updateItem()" [formGroup]="itemForm">
+        <div class="label">Nom</div>
+        <input type="text" formControlName="name" [cltValidators]="itemForm.controls['name']" id="name">
+        <clt-form-errors [model]="itemForm.controls['name']"></clt-form-errors>
+
+        <div class="label">Description</div>
+        <input type="text" formControlName="description" [cltValidators]="itemForm.controls['description']" id="description">
+        <clt-form-errors [model]="itemForm.controls['description']"></clt-form-errors>
+
+        <div class="label">Prix</div>
+        <input type="number" formControlName="price" [cltValidators]="itemForm.controls['price']" id="price">
+        <clt-form-errors [model]="itemForm.controls['price']"></clt-form-errors>
+      
+        <button class="btn btn-success" [disabled]="!itemForm.valid">
+          <i class="fa fa-check"></i>
+          Modifier
+        </button>
+      </form>
+    </clt-panel>
+  </div>
+</div>
