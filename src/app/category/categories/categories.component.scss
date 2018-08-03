@@ -1,1 +1,19 @@
-@import '../../../sdk'
+@import '../../../sdk';
+::ng-deep{
+    th {
+        text-align: left;
+        &.checkbox{
+            width: 2em;
+        }
+    }
+    .ui-chkbox .ui-chkbox-box{
+        background-color: white;
+        color: black;
+        border: 2px solid #455a64;
+    }
+    .ui-chkbox-box:not(.ui-state-disabled):not(.ui-state-active):hover{
+        background-color: white;
+        color: black;
+        border: 2px solid #455a64;
+    }
+}

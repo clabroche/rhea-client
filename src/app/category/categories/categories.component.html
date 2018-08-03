@@ -2,6 +2,7 @@
   <div class="rhea-content">
     <rhea-card *ngFor="let category of categories"
       [title]="category.name"
+      additionalText="{{category.items.length}} items"
       [noCheckBox]="true"
       (action)="openActionMenu(category)"
     ></rhea-card>
@@ -11,15 +12,30 @@
   </rhea-bar-bottom>
 </div>
 
-<clt-popup #addPopup title="Ajouter une liste de course">
+<clt-popup #addPopup width="95vw">
   <div title>
-    Ajouter dans la liste
+    Ajouter une catégorie
   </div>
   <ng-template clt-popup-body>
     <form [formGroup]="addCategoryForm">
       <label>Nom</label>
       <input type="text" formControlName="name" [cltValidators]="addCategoryForm.controls['name']"/>
       <clt-form-errors [model]="addCategoryForm.controls['name']"></clt-form-errors>
+
+      <p-table [value]="items" [(selection)]="selectedItems" dataKey="uuid" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="checkbox"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+            <th>Item</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+            <td>{{item.name}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </form>
   </ng-template>
 </clt-popup>
