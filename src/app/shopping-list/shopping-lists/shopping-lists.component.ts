@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CltPopupComponent, CltSidePanelComponent } from 'ngx-callisto/dist';
@@ -10,13 +10,14 @@ import { TouchSequence } from 'selenium-webdriver';
   templateUrl: './shopping-lists.component.html',
   styleUrls: ['./shopping-lists.component.scss']
 })
-export class ShoppingListsComponent implements OnInit {
-
+export class ShoppingListsComponent implements OnInit, OnDestroy {
   shoppingLists = [];
   shoppingListForm: FormGroup;
+  timer;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
   @ViewChild('deletePopup') deletePopup: CltPopupComponent;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
+
   constructor(
     private graphql: GraphQLService,
     private fb: FormBuilder,
@@ -26,11 +27,16 @@ export class ShoppingListsComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => this.common.routeName = 'Listes de course');
     this.initForms();
-    setInterval(_=>{
+    this.timer = setInterval(_=>{
       this.getAllShoppingList();
     }, this.common.refreshInterval)
     this.getAllShoppingList();
   }
+
+  ngOnDestroy() {
+    clearInterval(this.timer);
+  }
+
   initForms() {
     this.shoppingListForm = this.fb.group({
       name: ['', Validators.required],

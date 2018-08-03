@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { CommonService } from '../../providers/common.service';
 import { CltPopupComponent } from 'ngx-callisto/dist';
@@ -8,8 +8,9 @@ import { CltPopupComponent } from 'ngx-callisto/dist';
   templateUrl: './items.component.html',
   styleUrls: ['./items.component.scss']
 })
-export class ItemsComponent implements OnInit {
+export class ItemsComponent implements OnInit, OnDestroy {
   items = [];
+  timer;
   @ViewChild('deletePopup') deletePopup: CltPopupComponent;
   
   constructor(
@@ -19,10 +20,14 @@ export class ItemsComponent implements OnInit {
 
   ngOnInit() {
     setTimeout(() => this.common.routeName = 'Items');
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.getAllItems();
     }, this.common.refreshInterval);
     this.getAllItems();
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.timer)
   }
  
   async getAllItems () {
