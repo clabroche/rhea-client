@@ -1,18 +1,24 @@
 <div class="rhea-container">
   <div class="rhea-content">
-    <rhea-card 
-      [title]="item.name" 
-      [description]="item.description"
-      [additionalText]="item.price * item.quantity + '€'"
-      [circleText]="item.quantity - item.done" 
-      [quantity]='item.quantity'
-      [done]="item.done"
-      [checked]='item.done === item.quantity'
-      *ngFor='let item of shoppingList?.items' 
-      (click)="doneIncrement(item)"
-      (action)="openActionMenu(item)"
-      (checkedChange)="doneIncrement(item, $event)"
-      ></rhea-card>
+
+    
+    <div *ngFor="let category of categories">
+      <h2>{{category === 'other' ? 'Autres' : category}}</h2>
+      <div *ngFor="let item of sortCategoryObject[category]">
+          <rhea-card 
+            [title]="item.name" 
+            [description]="item.description"
+            [additionalText]="item.price * item.quantity + '€'"
+            [circleText]="item.quantity - item.done" 
+            [quantity]='item.quantity'
+            [done]="item.done"
+            [checked]='item.done === item.quantity'
+            (click)="doneIncrement(item)"
+            (action)="openActionMenu(item)"
+            (checkedChange)="doneIncrement(item, $event)"
+            ></rhea-card>
+        </div>
+      </div>
   </div>
   <rhea-bar-bottom (action)='addItem()'>
     {{ shoppingList?.items?.length }} item{{shoppingList?.items?.length ? 's': ''}} au total

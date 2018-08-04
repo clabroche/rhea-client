@@ -4,7 +4,7 @@ import { CltPopupComponent, CltCommonService, CltSidePanelComponent } from 'ngx-
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../providers/common.service';
-
+import * as sort from "fast-sort";
 @Component({
   selector: 'shopping-list',
   templateUrl: './shopping-list.component.html',
@@ -17,6 +17,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   addItemForm: FormGroup;
   sub;
   timer;
+  categories = [];
+  sortCategoryObject;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
   @ViewChild('deletePopup') deletePopup: CltPopupComponent;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
@@ -57,26 +59,56 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     });
   }
   async getAllItems() {
-    const items = await this.graphql.query(`
+    let items = await this.graphql.query(`
       items { name, description, price}
     `).then((data) => data.items);
     if (!items) return;
+    items = sort(items).desc('name')
     if (!this.items) return this.items = items;
     this.items = this.common.merge(this.items, items);
   }
 
   async getShoppingList() {
     const shoppingList = await this.graphql.query(`
-      shoppingListById(uuid: "${this.uuid}") {
-        uuid, name
-        items {
-          uuid, name, description, quantity, done, price
-        }
+    shoppingListById(uuid: "${this.uuid}") {
+      uuid, name
+      items {
+        uuid, name, description, quantity, done, price, 
+        category { name }
       }
+    }
     `).then(({ shoppingListById }) => shoppingListById);
-    console.log(shoppingList.items)
-    this.common.routeName = shoppingList.name;
+    if(!shoppingList) return;
     this.shoppingList = this.common.merge(this.shoppingList, shoppingList);
+    this.common.routeName = shoppingList.name;
+    const sortCategoryObject = {}
+    // {
+    //   category1: [
+    //     item1,
+    //     item2
+    //   ]...
+    // }
+    if(shoppingList.items) {
+      shoppingList.items.map(item=>{
+        if(item.category) {
+          if (!sortCategoryObject[item.category.name]) {
+            sortCategoryObject[item.category.name] = []
+            this.categories.push(item.category.name)
+          }
+          sortCategoryObject[item.category.name].push(item);
+        }
+        else {
+          if (!sortCategoryObject['other']) {
+            sortCategoryObject['other'] = []
+            this.categories.push('other')
+          }
+          sortCategoryObject['other'].push(item);
+        }
+      })
+    }
+    this.sortCategoryObject = this.common.merge(this.sortCategoryObject, sortCategoryObject);
+    this.categories = Object.keys(this.sortCategoryObject)
+
   }
 
   addItem() {
@@ -94,7 +126,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   doneIncrement(item, checkedStatus) {
-    const i = this.shoppingList.items.indexOf(item);
     if (checkedStatus && checkedStatus.checked) item.done = item.quantity - 1;
     if (item.quantity)
     this.graphql.mutation(`
@@ -103,7 +134,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       })}) {
         done
       }`).then(({ shoppingListAddItem }) => {
-        this.shoppingList.items[i].done = shoppingListAddItem.done;
+        return this.getShoppingList()
       });
   }
 
