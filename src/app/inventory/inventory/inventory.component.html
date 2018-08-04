@@ -1,0 +1,66 @@
+<div class="rhea-container">
+  <div class="rhea-content">
+
+    
+    <div *ngFor="let category of categories">
+      <h2>{{category === 'other' ? 'Autres' : category}}</h2>
+      <div *ngFor="let item of sortCategoryObject[category]">
+          <rhea-card 
+            [title]="item.name" 
+            [description]="item.description"
+            [circleText]="item.quantity"
+            [noCheckBox]="true"
+            (action)="openActionMenu(item)"
+            ></rhea-card>
+        </div> 
+      </div>
+  </div>
+  <rhea-bar-bottom (action)='addItem()'>
+    {{ inventory?.items?.length }} item{{inventory?.items?.length ? 's': ''}} au total
+  </rhea-bar-bottom>
+</div> 
+
+<clt-popup #addPopup width="95vw">
+  <div title>
+    {{addPopup.context?.title}}
+  </div>
+  <ng-template clt-popup-body>
+    <form [formGroup]="addItemForm">
+      <label>Nom</label>
+      <input 
+        type="text"
+        formControlName="name"
+        [cltValidators]="addItemForm.controls['name']"
+        cltAutocomplete [source]="items" property="name" [model]="addItemForm.controls['name']"/>
+      <clt-form-errors [model]="addItemForm.controls['name']"></clt-form-errors>
+
+      <label>Description</label>
+      <input  type="text" formControlName="description" [cltValidators]="addItemForm.controls['description']"/>
+      <clt-form-errors [model]="addItemForm.controls['description']"></clt-form-errors>
+
+      <label>Quantité</label>
+      <input  type="number" formControlName="quantity" [cltValidators]="addItemForm.controls['quantity']"/>
+      <clt-form-errors [model]="addItemForm.controls['quantity']"></clt-form-errors>
+
+    </form>
+  </ng-template>
+</clt-popup>
+
+<clt-popup #deletePopup body="Voulez-vous vraiment supprimer cette item ?">
+  <div title>
+    Supprimer un item
+  </div>
+</clt-popup>
+
+<clt-side-panel #actionMenu direction="bottom" [noActions]="true">
+  <div title>
+    {{actionMenu.context?.name}}
+  </div>
+  <div *clt-popup-body>
+    <ul>
+      <li (click)="updateItem(actionMenu.context)">Modification dans la liste</li>
+      <li routerLink="/items/{{actionMenu.context?.uuid}}">Modification</li>
+      <li (click)="deleteItem(actionMenu.context)">Suppression</li>
+    </ul>
+  </div>
+</clt-side-panel>

@@ -141,7 +141,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
 
   openActionMenu(event) {
-    const i = this.shoppingList.items.indexOf(event);
     this.actionMenu.title = event.name;
     this.actionMenu.open(event);
   }

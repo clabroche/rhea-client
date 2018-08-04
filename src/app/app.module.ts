@@ -31,7 +31,9 @@ registerLocaleData(localeFr, 'fr');
           { path: '', redirectTo: '/shoppingLists', pathMatch: 'full'},
           { path: 'shoppingLists', loadChildren: 'src/app/shopping-list/shopping-list.module#ShoppingListModule'},
           { path: 'categories', loadChildren: 'src/app/category/category.module#CategoryModule'},
-          { path: 'items', loadChildren: 'src/app/item/item.module#ItemModule'}
+          { path: 'items', loadChildren: 'src/app/item/item.module#ItemModule'},
+          { path: 'settings', loadChildren: 'src/app/settings/settings.module#SettingsModule'},
+          { path: 'inventory', loadChildren: 'src/app/inventory/inventory.module#InventoryModule'}
         ]
       }
     ]),
