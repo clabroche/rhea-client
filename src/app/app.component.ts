@@ -37,6 +37,19 @@ export class AppComponent implements OnInit {
           description: 'Categories',
           url: '/categories',
           click: _ => { this.sidebarService.close() }
+        }, {
+          icon: 'fas fa-book',
+          description: 'Inventaire',
+          url: '/inventory',
+          click: _ => { this.sidebarService.close() }
+        }
+      ],
+      bottom: [
+        {
+          icon: 'fas fa-cog',
+          description: 'Paramètres',
+          url: '/settings',
+          click: _ => { this.sidebarService.close() }
         }
       ]
     };
