@@ -4,16 +4,16 @@
     
     <div *ngFor="let category of categories">
       <h2>{{category === 'other' ? 'Autres' : category}}</h2>
-      <div *ngFor="let item of sortCategoryObject[category]">
-          <rhea-card 
-            [title]="item.name" 
-            [description]="item.description"
-            [circleText]="item.quantity"
-            [noCheckBox]="true"
-            (action)="openActionMenu(item)"
-            ></rhea-card>
-        </div> 
-      </div>
+      <a *ngFor="let item of sortCategoryObject[category]" routerLink="/items/{{item.uuid}}">
+        <rhea-card 
+          [title]="item.name" 
+          [description]="item.description"
+          [circleText]="item.quantity"
+          [noCheckBox]="true"
+          (action)="openActionMenu(item)"
+          ></rhea-card>
+      </a> 
+    </div>
   </div>
   <rhea-bar-bottom (action)='addItem()'>
     {{ inventory?.items?.length }} item{{inventory?.items?.length ? 's': ''}} au total
@@ -58,8 +58,7 @@
   </div>
   <div *clt-popup-body>
     <ul>
-      <li (click)="updateItem(actionMenu.context)">Modification dans la liste</li>
-      <li routerLink="/items/{{actionMenu.context?.uuid}}">Modification</li>
+      <li (click)="updateItem(actionMenu.context)">Modification</li>
       <li (click)="deleteItem(actionMenu.context)">Suppression</li>
     </ul>
   </div>

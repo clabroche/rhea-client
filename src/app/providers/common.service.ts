@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { mergeWith as _merge } from 'lodash';
+import { CltCommonService } from 'ngx-callisto/dist';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { mergeWith as _merge } from 'lodash';
 export class CommonService {
   routeName: string;
   refreshInterval = 750;
-  constructor() { }
+  constructor(private clt: CltCommonService) { }
   updateHeader(title: string) {
     this.routeName = title;
   }

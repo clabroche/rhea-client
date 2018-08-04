@@ -82,17 +82,13 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.shoppingList = this.common.merge(this.shoppingList, shoppingList);
     this.common.routeName = shoppingList.name;
     const sortCategoryObject = {}
-    // {
-    //   category1: [
-    //     item1,
-    //     item2
-    //   ]...
-    // }
+    this.categories = []
     if(shoppingList.items) {
       shoppingList.items.map(item=>{
         if(item.category) {
           if (!sortCategoryObject[item.category.name]) {
             sortCategoryObject[item.category.name] = []
+            console.log('hey')
             this.categories.push(item.category.name)
           }
           sortCategoryObject[item.category.name].push(item);
@@ -106,9 +102,13 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         }
       })
     }
-    this.sortCategoryObject = this.common.merge(this.sortCategoryObject, sortCategoryObject);
+    console.log(this.sortCategoryObject, sortCategoryObject)
+    if (this.sortCategoryObject && Object.keys(sortCategoryObject).length !== Object.keys(this.sortCategoryObject).length) {
+      this.sortCategoryObject = sortCategoryObject
+    } else {
+      this.sortCategoryObject = this.common.merge(this.sortCategoryObject, sortCategoryObject);
+    }
     this.categories = Object.keys(this.sortCategoryObject)
-
   }
 
   addItem() {

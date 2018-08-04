@@ -26,9 +26,18 @@ export class InventoryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getInventory()
-    this.getAllItems()
+    setInterval(() => {
+      Promise.all([
+        this.getInventory(),
+        this.getAllItems()
+      ])
+    }, this.common.refreshInterval);
+    Promise.all([
+      this.getInventory(),
+      this.getAllItems()
+    ])
     this.initForms()
+    setTimeout(() => this.common.routeName = "Inventaire");
   }
 
   initForms() {
@@ -59,13 +68,14 @@ export class InventoryComponent implements OnInit {
 
     if (!inventory) return;
     this.inventory = this.common.merge(this.inventory, inventory);
-    this.common.routeName = inventory.name;
     const sortCategoryObject = {}
-    if (inventory.items) {
-      inventory.items.map(item => {
-        if (item.category) {
+    this.categories = []
+    if(inventory.items) {
+      inventory.items.map(item=>{
+        if(item.category) {
           if (!sortCategoryObject[item.category.name]) {
             sortCategoryObject[item.category.name] = []
+            console.log('hey')
             this.categories.push(item.category.name)
           }
           sortCategoryObject[item.category.name].push(item);
@@ -79,9 +89,12 @@ export class InventoryComponent implements OnInit {
         }
       })
     }
-    this.sortCategoryObject = this.common.merge(this.sortCategoryObject, sortCategoryObject);
+    if (this.sortCategoryObject && Object.keys(sortCategoryObject).length !== Object.keys(this.sortCategoryObject).length) {
+      this.sortCategoryObject = sortCategoryObject
+    } else {
+      this.sortCategoryObject = this.common.merge(this.sortCategoryObject, sortCategoryObject);
+    }
     this.categories = Object.keys(this.sortCategoryObject)
-    console.log(this.inventory)
   }
 
   updateItem(item) {
@@ -108,7 +121,8 @@ export class InventoryComponent implements OnInit {
 
   addItem() {
     this.initForms()
-    this.addPopup.bindForm(this.addItemForm).open().subscribe(result=>{
+    const title = "Ajout d'un item";
+    this.addPopup.bindForm(this.addItemForm).open({title}).subscribe(result=>{
       if(!result) return ;
       this.graphql.mutation(`
         inventoryAddItem(
