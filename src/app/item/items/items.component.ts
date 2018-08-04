@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { CommonService } from '../../providers/common.service';
 import { CltPopupComponent } from 'ngx-callisto/dist';
-
+import * as sort from "fast-sort";
 @Component({
   selector: 'items',
   templateUrl: './items.component.html',
@@ -31,8 +31,9 @@ export class ItemsComponent implements OnInit, OnDestroy {
   }
  
   async getAllItems () {
-    const {items} = await this.graphql.query(`items { uuid, name, description }`);
+    let {items} = await this.graphql.query(`items { uuid, name, description }`);
     if(!items) return;
+    sort(items).asc('name');
     this.items = this.common.merge(this.items, items);
   }
 
