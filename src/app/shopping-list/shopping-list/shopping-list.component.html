@@ -25,9 +25,9 @@
   </rhea-bar-bottom>
 </div>
 
-<clt-popup #addPopup title="Ajouter une liste de course">
+<clt-popup #addPopup width="95vw">
   <div title>
-    Ajouter dans la liste
+    {{addPopup.context?.title}}
   </div>
   <ng-template clt-popup-body>
     <form [formGroup]="addItemForm">

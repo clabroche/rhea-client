@@ -112,7 +112,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   addItem() {
-    this.addPopup.bindForm(this.addItemForm).open().subscribe(async result => {
+    const title="Ajout d'un item dans la liste";
+    this.addPopup.bindForm(this.addItemForm).open({title}).subscribe(async result => {
       this.initForms();
       if (!result) return;
       result = await this.graphql.mutation(`
@@ -148,7 +149,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   updateItem(item) {
     this.actionMenu.close();
     this.addItemForm.patchValue(item);
-    this.addPopup.bindForm(this.addItemForm).open(item).subscribe(result => {
+    const title="Mise à jour de l'item";
+    this.addPopup.bindForm(this.addItemForm).open({title}).subscribe(result => {
       if (!result) return;
       result.done = item.done;
       this.graphql.mutation(`
