@@ -42,6 +42,11 @@ export class AppComponent implements OnInit {
           description: 'Inventaire',
           url: '/inventory',
           click: _ => { this.sidebarService.close() }
+        }, {
+          icon: 'fas fa-utensil-spoon',
+          description: 'Recettes',
+          url: '/recipes',
+          click: _ => { this.sidebarService.close() }
         }
       ],
       bottom: [

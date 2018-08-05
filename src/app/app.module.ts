@@ -12,7 +12,6 @@ import { AuthService } from '../auth/auth.service';
 import { RheaSdkModule } from './rhea-sdk/rhea-sdk.module';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-import { ItemModule } from './item/item.module';
 registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [
@@ -33,7 +32,8 @@ registerLocaleData(localeFr, 'fr');
           { path: 'categories', loadChildren: 'src/app/category/category.module#CategoryModule'},
           { path: 'items', loadChildren: 'src/app/item/item.module#ItemModule'},
           { path: 'settings', loadChildren: 'src/app/settings/settings.module#SettingsModule'},
-          { path: 'inventory', loadChildren: 'src/app/inventory/inventory.module#InventoryModule'}
+          { path: 'inventory', loadChildren: 'src/app/inventory/inventory.module#InventoryModule'},
+          { path: 'recipes', loadChildren: 'src/app/recipe/recipe.module#RecipeModule'}
         ]
       }
     ]),
