@@ -5,6 +5,7 @@ import * as jwt_decode from 'jwt-decode';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Resolve } from '@angular/router';
+import { environment } from '../environments/environment';
 
 /**
  * Describe type Permission
@@ -74,9 +75,10 @@ export class AuthService implements Resolve<any> {
     private graphQLService: GraphQLService,
     private http: HttpClient
   ) {
+    console.log(environment.apiUrl)
     this.tokenRefresh = setInterval(() => { // refresh all token
       if (!this.auth) { return; }
-      http.post(window.location.protocol + '//' + window.location.hostname + ':3000/refresh', '', {
+      http.post(environment.apiUrl + ':3000/refresh', '', {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'authorization': 'bearer ' + this.jwtService.getToken()
@@ -103,7 +105,7 @@ export class AuthService implements Resolve<any> {
    */
   async login(user) {
     const response: any = await this.http.post(
-      window.location.protocol + '//' + window.location.hostname + ':3000/login',
+      environment.apiUrl + ':3000/login',
       { login: user.login, password: user.password }
     ).toPromise().catch(err => {
       AuthError.next({

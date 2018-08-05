@@ -13,6 +13,7 @@ import { DictionnaireService } from './providers/dictionnaire.service';
 import { onError, ErrorHandler } from 'apollo-link-error';
 import { JwtService } from '../auth/jwt.service';
 import { AuthService } from '../auth/auth.service';
+import { environment } from '../environments/environment';
 
 const azerty = require('./fragmentTypes.json');
 export const GraphQLError = new Subject();
@@ -131,7 +132,7 @@ export class GraphQLModule {
         new ApolloLink(this.authMiddleware),
         new ApolloLink(this.afterware),
         onError(<ErrorHandler>this.errorFunction),
-        httpLink.create({ uri: window.location.protocol + '//' + window.location.hostname + ':3000/graphql' })
+        httpLink.create({ uri: environment.apiUrl + ':3000/graphql' })
       ]),
       cache: new InMemoryCache({fragmentMatcher})
     });
