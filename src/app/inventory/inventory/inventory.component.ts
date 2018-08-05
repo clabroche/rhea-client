@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { CommonService } from '../../providers/common.service';
 import { CltSidePanelComponent, CltPopupComponent } from 'ngx-callisto/dist';
@@ -9,13 +9,14 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './inventory.component.html',
   styleUrls: ['./inventory.component.scss']
 })
-export class InventoryComponent implements OnInit {
+export class InventoryComponent implements OnInit, OnDestroy {
 
   inventory
   sortCategoryObject
   categories = [];
   addItemForm: FormGroup;
   items = []
+  timer;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
   @ViewChild('deletePopup') deletePopup :CltPopupComponent;
@@ -26,7 +27,7 @@ export class InventoryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    setInterval(() => {
+    this.timer = setInterval(() => {
       Promise.all([
         this.getInventory(),
         this.getAllItems()
@@ -39,7 +40,9 @@ export class InventoryComponent implements OnInit {
     this.initForms()
     setTimeout(() => this.common.routeName = "Inventaire");
   }
-
+  ngOnDestroy() {
+    clearInterval(this.timer)
+  }
   initForms() {
     this.addItemForm = this.fb.group({
       name: ['', Validators.required],
@@ -101,8 +104,11 @@ export class InventoryComponent implements OnInit {
     this.actionMenu.close();
     this.addItemForm.patchValue(item);
     const title = "Mise à jour de l'item";
+    this.addItemForm.controls['name'].disable()
     this.addPopup.bindForm(this.addItemForm).open({ title }).subscribe(result => {
       if (!result) return;
+      this.addItemForm.controls['name'].enable()
+      result = this.addItemForm.value
       this.graphql.mutation(`
         inventoryAddItem(
           quantity: ${this.addItemForm.value.quantity},
@@ -120,6 +126,7 @@ export class InventoryComponent implements OnInit {
   }
 
   addItem() {
+    this.addItemForm.controls['name'].enable()
     this.initForms()
     const title = "Ajout d'un item";
     this.addPopup.bindForm(this.addItemForm).open({title}).subscribe(result=>{
