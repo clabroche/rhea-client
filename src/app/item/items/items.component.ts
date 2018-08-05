@@ -35,7 +35,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
     if(!items) return;
     sort(items).asc('name');
     this.items = this.common.merge(this.items, items);
-    console.log(this.items)
   }
 
   async deleteItem(uuid) {

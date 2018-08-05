@@ -21,7 +21,8 @@
       </div>
   </div>
   <rhea-bar-bottom (action)='addItem()'>
-    {{ shoppingList?.items?.length }} item{{shoppingList?.items?.length ? 's': ''}} au total
+    {{ shoppingList?.items?.length }} item{{shoppingList?.items?.length ? 's': ''}}
+    pour un montant total de {{getPrice() || 0}}€
   </rhea-bar-bottom>
 </div>
 

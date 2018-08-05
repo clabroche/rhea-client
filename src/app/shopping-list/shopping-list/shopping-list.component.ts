@@ -5,6 +5,7 @@ import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../providers/common.service';
 import * as sort from "fast-sort";
+import { preserveWhitespacesDefault } from '@angular/compiler';
 @Component({
   selector: 'shopping-list',
   templateUrl: './shopping-list.component.html',
@@ -152,6 +153,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.addItemForm.controls['name'].disable()
     this.addPopup.bindForm(this.addItemForm).open({title}).subscribe(result => {
       if (!result) return;
+      this.addItemForm.controls['name'].enable()
+      result = this.addItemForm.value
       result.done = item.done;
       this.graphql.mutation(`
         shoppingListAddItem(listUuid:"${this.uuid}", input:${this.graphql.stringifyWithoutPropertiesQuote(result)}) {
@@ -170,5 +173,13 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         shoppingListRemoveItem(listUuid: "${this.uuid}", itemUuid: "${item.uuid}")
       `).then(_ => this.getShoppingList());
     });
+  }
+
+  getPrice() {
+    return this.categories.map(category => {
+      return this.sortCategoryObject[category].reduce((total, item)=>{
+        return (item.price * item.quantity) + total
+      }, 0)
+    },0).reduce((prev, curr)=>curr+prev , 0)
   }
 }
