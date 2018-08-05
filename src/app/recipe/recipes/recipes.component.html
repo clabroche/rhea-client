@@ -1,3 +1,52 @@
-<p>
-  recipes works!
-</p>
+
+<div class="rhea-container">
+  <div class="rhea-content">
+    <a routerLink="./{{recipe.uuid}}" *ngFor='let recipe of recipes'>
+      <rhea-card
+        [uuid]='recipe'
+        [title]="recipe.name"
+        description="{{recipe.createdAt | date:'d MMM y'}} {{recipe.description ? '-' : ''}} {{recipe.description}}"
+        [noCheckBox]="true"
+        (action)="openActionMenu($event)"
+      ></rhea-card>
+    </a>
+  </div>
+  <rhea-bar-bottom (action)='addShoppingList()'>
+     {{ recipes.length }} liste{{recipes.length ? 's': ''}} au total
+  </rhea-bar-bottom>
+</div>
+
+<clt-popup #addPopup width="90vw">
+  <div title>
+    Ajouter une liste de course
+  </div>
+  <ng-template clt-popup-body>
+    <form [formGroup]="recipeForm">
+      <label>Nom</label>
+      <input type="text" formControlName="name" [cltValidators]="recipeForm.controls['name']" />
+      <clt-form-errors [model]="recipeForm.controls['name']"></clt-form-errors>
+      <label>Description</label>
+      <input type="text" formControlName="description" [cltValidators]="recipeForm.controls['description']" />
+      <clt-form-errors [model]="recipeForm.controls['description']"></clt-form-errors>
+    </form>
+  </ng-template>
+</clt-popup>
+
+<clt-popup #deletePopup body="Voulez-vous vraiment supprimer cette liste ?">
+  <div title>
+    Supprimer une liste de course
+  </div>
+</clt-popup>
+
+<clt-side-panel #actionMenu direction="bottom" [noActions]="true">
+  <div title>
+    {{actionMenu.context | json}}
+    {{actionMenu.context?.name}}
+  </div>
+  <div *clt-popup-body>
+    <ul>
+      <li (click)="updateItem(actionMenu.context)">Modification</li>
+      <li (click)="deleteItem(actionMenu.context)">Suppression</li>
+    </ul>
+  </div>
+</clt-side-panel>
