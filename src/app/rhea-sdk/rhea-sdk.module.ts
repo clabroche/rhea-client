@@ -5,6 +5,7 @@ import { CltFormsModule, CltCoreModule } from 'ngx-callisto/dist';
 import { RheaCardComponent } from './rhea-card/rhea-card.component';
 import { RheaBarBottomComponent } from './rhea-bar-bottom/rhea-bar-bottom.component';
 import { CltAutocompleteDirective } from './directives/clt-autocomplete.directive';
+import { CltResizeTextAreaDirective } from './directives/clt-resize-text-area.directive';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { CltAutocompleteDirective } from './directives/clt-autocomplete.directiv
   declarations: [
     RheaCardComponent,
     RheaBarBottomComponent,
-    CltAutocompleteDirective
+    CltAutocompleteDirective,
+    CltResizeTextAreaDirective
   ],
   exports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { CltAutocompleteDirective } from './directives/clt-autocomplete.directiv
     ReactiveFormsModule,
     RheaCardComponent,
     RheaBarBottomComponent,
-    CltAutocompleteDirective
+    CltAutocompleteDirective,
+    CltResizeTextAreaDirective    
   ]
 })
 export class RheaSdkModule { }

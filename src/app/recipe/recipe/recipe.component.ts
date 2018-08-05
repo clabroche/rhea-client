@@ -1,0 +1,152 @@
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
+import { ActivatedRoute } from '@angular/router';
+import { CommonService } from '../../providers/common.service';
+import { CltCommonService, CltPopupComponent, CltSidePanelComponent } from 'ngx-callisto/dist';
+import * as sort from "fast-sort";
+
+@Component({
+  selector: 'recipe',
+  templateUrl: './recipe.component.html',
+  styleUrls: ['./recipe.component.scss']
+})
+export class RecipeComponent implements OnInit, OnDestroy {
+  timer;
+  sub;
+  uuid;
+  allItems = []
+  recipe:any = {};
+  addItemForm: FormGroup
+
+  @ViewChild('description') description: ElementRef;
+  @ViewChild('addPopup') addPopup: CltPopupComponent;
+  @ViewChild('deletePopup') deletePopup: CltPopupComponent;
+  @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
+  constructor(
+    private fb: FormBuilder,
+    private graphql: GraphQLService,
+    private route: ActivatedRoute,
+    private common: CommonService,
+    private cltcommon: CltCommonService
+  ) {
+    this.sub = this.route.params.subscribe(params => {
+      this.uuid = params['uuid'];
+    });
+  }
+
+  ngOnInit() {
+    this.initForms();
+    this.timer = setInterval(_ => {
+      Promise.all([
+        this.getRecipe(),
+        this.getAllItems(),
+      ]);
+    }, this.common.refreshInterval);
+    Promise.all([
+      this.getRecipe(),
+      this.getAllItems(),
+    ]);
+  }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+    clearInterval(this.timer);
+  }
+
+  async getAllItems() {
+    let items = await this.graphql.query(`
+      items { name, description, price}
+    `).then((data) => data.items);
+    if (!items) return;
+    items = sort(items).desc('name')
+    if (!this.allItems) return this.allItems = items;
+    this.allItems = this.common.merge(this.allItems, items);
+  }
+
+  async getRecipe() {
+    const recipe = await this.graphql.query(`
+      recipeById(uuid: "${this.uuid}") {
+        uuid, name, steps
+        items {
+          uuid, name, description, quantity, price, 
+          category { name }
+        }
+      }
+      `).then(({ recipeById }) => recipeById);
+      console.log(recipe)
+    this.recipe = this.common.merge(this.recipe, recipe)
+
+    var event = new Event('input');
+    setTimeout(_=>
+      this.description.nativeElement.dispatchEvent(event)
+    );
+    
+    setTimeout(() => this.common.routeName = this.recipe.name);
+  }
+
+  addItem() {
+    this.addItemForm.controls['name'].enable()
+    this.initForms()
+    this.addPopup.bindForm(this.addItemForm).open().subscribe(result => {
+      if (!result) return;
+      this.graphql.mutation(`
+        recipeAddItem(recipeUuid: "${this.uuid}", input:${
+        this.graphql.stringifyWithoutPropertiesQuote(result)
+        }) { uuid }
+      `).then(_ => this.getRecipe())
+    })
+  }
+  removeItem(item) {
+    this.initForms()
+    this.deletePopup.open().subscribe(result => {
+      if (!result) return;
+      this.graphql.mutation(`
+        recipeRemoveItem(recipeUuid: "${this.uuid}", itemUuid: "${item.uuid}")
+      `).then(_ => this.getRecipe())
+    })
+  }
+  updateItem(item) {
+    this.initForms()
+    this.addItemForm.controls['name'].disable()
+    this.addItemForm.patchValue(item)
+    this.addPopup.bindForm(this.addItemForm).open().subscribe(result => {
+      if (!result) return;
+      this.addItemForm.controls['name'].enable()
+      result = this.addItemForm.value;
+      this.graphql.mutation(`
+        recipeAddItem(recipeUuid: "${this.uuid}", input:${
+          this.graphql.stringifyWithoutPropertiesQuote(result)
+        }) { uuid }
+      `).then(_ => this.getRecipe())
+    })
+  }
+  initForms() {
+    this.addItemForm = this.fb.group({
+      name: ['', Validators.required],
+      description: [''],
+      quantity: [1, Validators.required]
+    });
+  }
+  saveDescription(steps) {
+    this.graphql.mutation(`
+        recipeUpdate(uuid: "${this.uuid}", input:${
+          this.graphql.stringifyWithoutPropertiesQuote({
+            steps
+          })
+        }) { uuid }
+      `)
+  }
+  descriptionFocus() {
+    console.log('lkj')
+    clearInterval(this.timer)
+  }
+  descriptionFocusOut() {
+    this.descriptionFocus()
+    this.timer = setInterval(() => {
+      Promise.all([
+        this.getRecipe(),
+        this.getAllItems(),
+      ]);
+    }, this.common.refreshInterval);
+  }
+}

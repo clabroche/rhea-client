@@ -1,0 +1,59 @@
+<div class="rhea-container">
+  <div class="rhea-content">
+    <clt-panel>
+      <div class="header">
+        <div>Ingrédients</div>
+        <button (click)="addItem()">Ajouter un ingrédient</button>
+      </div>
+      <div class="ingredients">
+        <ul>
+          <li *ngFor='let item of recipe.items'>
+            <div class="description">
+              {{item.quantity}}
+              {{item.name}}
+            </div>
+            <div class='action'>
+              <i class='fas fa-edit' (click)="updateItem(item)"></i>
+              <i class='fas fa-trash' (click)="removeItem(item)"></i>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </clt-panel>
+    <clt-panel>
+      Etapes
+      <textarea 
+        #description
+        [value]="recipe.steps || ''" 
+        cltResizeTextArea 
+        (keyup)="saveDescription($event.target.value)"
+        (focus)="descriptionFocus()"
+        (focusout)="descriptionFocusOut()">
+      </textarea>
+    </clt-panel>
+  </div>
+</div>
+
+
+<clt-popup #addPopup width="95vw">
+  <div title>
+    {{addPopup.context?.title}}
+  </div>
+  <ng-template clt-popup-body>
+    <form [formGroup]="addItemForm">
+      <label>Nom</label>
+      <input type="text" formControlName="name" [cltValidators]="addItemForm.controls['name']" cltAutocomplete [source]="allItems"
+        property="name" [model]="addItemForm.controls['name']" />
+      <clt-form-errors [model]="addItemForm.controls['name']"></clt-form-errors>
+      <label>Quantité</label>
+      <input type="number" formControlName="quantity" [cltValidators]="addItemForm.controls['quantity']" />
+      <clt-form-errors [model]="addItemForm.controls['quantity']"></clt-form-errors>
+    </form>
+  </ng-template>
+</clt-popup>
+
+<clt-popup #deletePopup body="Voulez-vous vraiment supprimer cette item ?">
+  <div title>
+    Supprimer un item
+  </div>
+</clt-popup>

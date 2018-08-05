@@ -5,7 +5,6 @@ import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../providers/common.service';
 import * as sort from "fast-sort";
-import { preserveWhitespacesDefault } from '@angular/compiler';
 @Component({
   selector: 'shopping-list',
   templateUrl: './shopping-list.component.html',

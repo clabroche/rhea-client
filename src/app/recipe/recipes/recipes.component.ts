@@ -57,12 +57,6 @@ export class RecipesComponent implements OnInit, OnDestroy {
         uuid
         name
         description
-        createdAt
-        items {
-          uuid
-          name
-          description
-        }
       }
     `).then(({ recipes }) => {
         recipes = recipes.map(recipe => {

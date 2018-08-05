@@ -1,0 +1,35 @@
+@import '../../../sdk';
+::ng-deep {
+    .panel-container{
+        background-color: white;
+        width: auto !important;
+    }
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ingredients {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left: 5px solid var(--headerBgColor);
+    li {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        i {
+            font-size: 1.2em;
+            padding: 10px;
+        }
+    }
+}
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    border-left: 5px solid var(--headerBgColor);
+
+}
