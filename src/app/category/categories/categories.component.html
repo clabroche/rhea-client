@@ -22,9 +22,10 @@
       <input type="text" formControlName="name" [cltValidators]="addCategoryForm.controls['name']"/>
       <clt-form-errors [model]="addCategoryForm.controls['name']"></clt-form-errors>
 
-      <p-table [value]="items" [(selection)]="selectedItems" dataKey="uuid" [paginator]="true" [rows]="10">
+      <p-table #dt [value]="items" [(selection)]="selectedItems" dataKey="uuid" [paginator]="true" [rows]="10" [globalFilterFields]="['name','category.name']">
         <ng-template pTemplate="caption">
-          Items associés
+          Liste des items
+          <input type="text" placeholder="Global Filter" (keyup)="dt.filterGlobal($event.target.value, 'contains')" >
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
