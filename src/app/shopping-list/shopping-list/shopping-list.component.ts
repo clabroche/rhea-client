@@ -88,7 +88,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         if(item.category) {
           if (!sortCategoryObject[item.category.name]) {
             sortCategoryObject[item.category.name] = []
-            console.log('hey')
             this.categories.push(item.category.name)
           }
           sortCategoryObject[item.category.name].push(item);
@@ -102,7 +101,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         }
       })
     }
-    console.log(this.sortCategoryObject, sortCategoryObject)
     if (this.sortCategoryObject && Object.keys(sortCategoryObject).length !== Object.keys(this.sortCategoryObject).length) {
       this.sortCategoryObject = sortCategoryObject
     } else {
