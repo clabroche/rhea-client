@@ -2,6 +2,7 @@
   <div class="rhea-content">
     <rhea-card *ngFor='let item of items'
       [title]="item.name"
+      [description]="item.description"
       [noCheckBox]="true"
       actionIcon="far fa-times-circle"
       (action)="deleteItem(item.uuid)"
