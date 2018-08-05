@@ -75,7 +75,6 @@ export class AuthService implements Resolve<any> {
     private graphQLService: GraphQLService,
     private http: HttpClient
   ) {
-    console.log(environment.apiUrl)
     this.tokenRefresh = setInterval(() => { // refresh all token
       if (!this.auth) { return; }
       http.post(environment.apiUrl + ':3000/refresh', '', {
@@ -160,6 +159,7 @@ export class AuthService implements Resolve<any> {
    */
   deconnect() {
     this.auth = false;
+    window.localStorage.removeItem('jwtToken');
     AuthError.next({
       code: 401,
       message: {
