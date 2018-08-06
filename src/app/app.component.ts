@@ -14,12 +14,18 @@ export class AppComponent implements OnInit {
   title = 'app';
   sidebarConf: Configuration;
   constructor(
-    theme: CltThemeService,
+    themeService: CltThemeService,
     public sidebarService: CltSideBarService,
     public authservice: AuthService,
     private notifService: CltNotificationsService,
     public common: CommonService,
   ) {
+    let theme = window.localStorage.getItem('theme')
+    if(theme) {
+      theme = JSON.parse(theme)
+      themeService.theme = theme
+      themeService.reload()
+    }
     this.sidebarConf = {
       list: [
         {

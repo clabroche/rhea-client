@@ -1,0 +1,10 @@
+@import '../../../sdk';
+::ng-deep {
+  .panel-container {
+    background-color: white;
+    width: auto !important;
+  }
+  clt-panel[header="Export"] {
+    display: none
+  }
+}

@@ -1,5 +1,37 @@
 <div class="rhea-container">
   <div class="rhea-content">
-    <button (click)="auth.deconnect()">Deconnection</button>
+    <clt-panel header='Login' [toggleable]='true' [collapsed]="true">
+      <form [formGroup]="accountForm">
+        <div class="label">Login</div>
+        <input type="text" formControlName="login" [cltValidators]="accountForm.controls['login']">
+        <clt-form-errors [model]="accountForm.controls['login']"></clt-form-errors>
+        
+        <button class="btn btn-success" [disabled]="!accountForm.valid" (submit)="changeAuth()">
+          <i class="fa fa-check"></i>
+          Changer le login
+        </button>
+      </form>
+    </clt-panel>
+
+    <clt-panel header='Mot de passes' [toggleable]='true' [collapsed]="true">    
+      <form [formGroup]="passwordForm">
+        <div class="label">Mot de passe</div>
+        <input type="password" formControlName="passphrase" [cltValidators]="passwordForm.controls['passphrase']">
+        <clt-form-errors [model]="passwordForm.controls['passphrase']"></clt-form-errors>
+
+        <div class="label">Vérification du mot de passe</div>
+        <input type="password" formControlName="recheckPassphrase" [cltValidators]="passwordForm">
+        <clt-form-errors [model]="passwordForm"></clt-form-errors>
+        
+        <button class="btn btn-success" [disabled]="!passwordForm.valid">
+          <i class="fa fa-check"></i>
+          Changer le mot de passe
+        </button>
+      </form>
+      <button (click)="auth.deconnect()">Deconnection</button>
+    </clt-panel>
+
+    <clt-theme-manager #themeManager>
+    </clt-theme-manager>
   </div>
 </div>
