@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CltFormsModule, CltCoreModule } from 'ngx-callisto/dist';
 import { RheaCardComponent } from './rhea-card/rhea-card.component';
 import { RheaBarBottomComponent } from './rhea-bar-bottom/rhea-bar-bottom.component';
@@ -24,6 +24,7 @@ import { CltResizeTextAreaDirective } from './directives/clt-resize-text-area.di
     CommonModule,
     CltFormsModule,
     ReactiveFormsModule,
+    FormsModule,
     RheaCardComponent,
     RheaBarBottomComponent,
     CltAutocompleteDirective,

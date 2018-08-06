@@ -21,15 +21,13 @@
       </div>
     </clt-panel>
     <clt-panel>
-      Etapes
-      <textarea 
-        #description
-        [value]="recipe.steps || ''" 
-        cltResizeTextArea 
-        (keyup)="saveDescription($event.target.value)"
-        (focus)="descriptionFocus()"
-        (focusout)="descriptionFocusOut()">
-      </textarea>
+      <div class="header">
+        Etapes
+        <button (click)="toggleEditable()">{{!editable ? "Editer la préparation": "Valider la préparation"}}</button>
+      </div>
+      <quill-editor [ngModel]="recipe.preparation" [readOnly]="!editable" #editor
+        (ngModelChange)="saveDescription($event)"
+      ></quill-editor>
     </clt-panel>
   </div>
 </div>

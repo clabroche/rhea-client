@@ -1,27 +1,30 @@
-import { Component, OnInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef, Renderer2, AfterViewChecked, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../providers/common.service';
 import { CltCommonService, CltPopupComponent, CltSidePanelComponent } from 'ngx-callisto/dist';
 import * as sort from "fast-sort";
+import { QuillEditorComponent } from 'ngx-quill';
 
 @Component({
   selector: 'recipe',
   templateUrl: './recipe.component.html',
   styleUrls: ['./recipe.component.scss']
 })
-export class RecipeComponent implements OnInit, OnDestroy {
+export class RecipeComponent implements OnInit, OnDestroy, AfterViewInit {
   timer;
   sub;
   uuid;
   allItems = []
   recipe:any = {};
   addItemForm: FormGroup
-
+  preparation: string;
+  editable = false
   @ViewChild('description') description: ElementRef;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
   @ViewChild('deletePopup') deletePopup: CltPopupComponent;
+  @ViewChild('editor') editor: QuillEditorComponent;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
   constructor(
     private fb: FormBuilder,
@@ -35,6 +38,9 @@ export class RecipeComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit() {
+    this.toggleEditable(false)
+  }
   ngOnInit() {
     this.initForms();
     this.timer = setInterval(_ => {
@@ -66,22 +72,16 @@ export class RecipeComponent implements OnInit, OnDestroy {
   async getRecipe() {
     const recipe = await this.graphql.query(`
       recipeById(uuid: "${this.uuid}") {
-        uuid, name, steps
+        uuid, name, preparation
         items {
           uuid, name, description, quantity, price, 
           category { name }
         }
       }
       `).then(({ recipeById }) => recipeById);
-      console.log(recipe)
     this.recipe = this.common.merge(this.recipe, recipe)
-
-    var event = new Event('input');
-    setTimeout(_=>
-      this.description.nativeElement.dispatchEvent(event)
-    );
-    
-    setTimeout(() => this.common.routeName = this.recipe.name);
+    setTimeout(() => this.common.routeName = recipe.name);
+    this.preparation = recipe.preparation
   }
 
   addItem() {
@@ -127,26 +127,31 @@ export class RecipeComponent implements OnInit, OnDestroy {
       quantity: [1, Validators.required]
     });
   }
-  saveDescription(steps) {
+  saveDescription(preparation) {
     this.graphql.mutation(`
         recipeUpdate(uuid: "${this.uuid}", input:${
           this.graphql.stringifyWithoutPropertiesQuote({
-            steps
+            preparation
           })
         }) { uuid }
       `)
   }
-  descriptionFocus() {
-    console.log('lkj')
-    clearInterval(this.timer)
-  }
-  descriptionFocusOut() {
-    this.descriptionFocus()
-    this.timer = setInterval(() => {
-      Promise.all([
-        this.getRecipe(),
-        this.getAllItems(),
-      ]);
-    }, this.common.refreshInterval);
+  toggleEditable(editable = !this.editable) {
+    this.editable = editable
+    const toolbar = this.editor['elementRef'].nativeElement.querySelector('.ql-toolbar')
+    if(!this.editable) {
+      this.editor['renderer'].setStyle(toolbar, 'display', 'none')
+      clearInterval(this.timer)
+      this.timer = setInterval(() => {
+        Promise.all([
+          this.getRecipe(),
+          this.getAllItems(),
+        ]);
+      }, this.common.refreshInterval);
+    } else {
+      console.log('out')
+      clearInterval(this.timer)
+      this.editor['renderer'].setStyle(toolbar, 'display', 'block')
+    }
   }
 }

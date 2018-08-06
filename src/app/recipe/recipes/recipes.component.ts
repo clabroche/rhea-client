@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CltPopupComponent, CltSidePanelComponent } from 'ngx-callisto/dist';
 import { CommonService } from '../../providers/common.service';
 import * as sort from 'fast-sort';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'recipes',
@@ -22,6 +23,7 @@ export class RecipesComponent implements OnInit, OnDestroy {
     private graphql: GraphQLService,
     private fb: FormBuilder,
     private common: CommonService,
+    private http: HttpClient,
   ) { }
 
   ngOnInit() {
@@ -56,6 +58,7 @@ export class RecipesComponent implements OnInit, OnDestroy {
       recipes {
         uuid
         name
+        createdAt
         description
       }
     `).then(({ recipes }) => {
@@ -104,5 +107,19 @@ export class RecipesComponent implements OnInit, OnDestroy {
       `);
       return this.getAllShoppingList();
     });
+  }
+
+  fetchMarmiton(url) {
+      this.graphql.mutation(`
+        recipeCreateWithMarmiton(url: "https://www.marmiton.org/recettes/recette_chocolat-des-neiges_18452.aspx") {
+          uuid, name, 
+          items{
+            name,
+            quantity
+          }
+        }
+      `).then(data=>{
+        console.log(data)
+      })
   }
 }

@@ -28,6 +28,18 @@ clt-side-panel {
     }
   }
 }
+#navbar #description {
+  font-weight: bold;
+}
 .host-container{
   min-width: 0 !important;
+}
+button {
+  padding: 10px;
+  background-color: #466c80;
+  color: white;
+  border: none;
+  &:active {
+    background-color: var(--stateActiveBgColor)
+  }
 }
