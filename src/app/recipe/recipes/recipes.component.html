@@ -33,6 +33,30 @@
   </ng-template>
 </clt-popup>
 
+<clt-popup #updateRecipePopup width="90vw">
+  <div title>
+    Modifier avant l'importation
+  </div>
+  <ng-template clt-popup-body>
+    <form [formGroup]="recipeForm">
+      <label>Nom</label>
+      <input type="text" [value]="updateRecipePopup.context?.name">
+      <div class="ingredients">
+        <label>Ingrédients</label>
+        <div *ngFor="let ingredient of updateRecipePopup.context?.items" class="items">
+          <div class="itemDescription">
+            <input type="text" class='quantity' [value]="ingredient.quantity">
+            <input type="text" class='name' [value]="ingredient.name">
+          </div>
+          <div class="itemAssociations">
+            <div *ngFor="let associate of ingredient.associateWith" class="itemAssociation" (click)="loadValueInInput($event, associate.name)">{{associate.name}}</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</clt-popup>
+
 <clt-popup #deletePopup body="Voulez-vous vraiment supprimer cette liste ?">
   <div title>
     Supprimer une liste de course
@@ -50,3 +74,5 @@
     </ul>
   </div>
 </clt-side-panel>
+
+

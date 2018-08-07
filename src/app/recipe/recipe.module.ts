@@ -6,8 +6,7 @@ import { RouterModule } from '@angular/router';
 import { CltOverlayModule, CltContainersModule } from 'ngx-callisto/dist';
 import { RecipeComponent } from './recipe/recipe.component';
 import { NgxEditorModule } from 'ngx-editor';
-import { ReactiveFormsModule } from '@angular/forms';
-import { QuillModule } from 'ngx-quill'
+import { QuillModule } from 'ngx-quill';
 @NgModule({
   imports: [
     CommonModule,

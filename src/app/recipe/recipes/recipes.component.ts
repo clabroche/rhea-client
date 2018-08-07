@@ -15,6 +15,7 @@ export class RecipesComponent implements OnInit, OnDestroy {
   recipes = [];
   recipeForm: FormGroup;
   timer;
+  @ViewChild('updateRecipePopup') updateRecipePopup: CltPopupComponent;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
   @ViewChild('deletePopup') deletePopup: CltPopupComponent;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
@@ -51,6 +52,14 @@ export class RecipesComponent implements OnInit, OnDestroy {
   openActionMenu(event) {
     this.actionMenu.title = event.name;
     this.actionMenu.open(event);
+  }
+
+  getAllItems() {
+    return this.graphql.query(`
+      items {
+        name
+      }
+    `).then(({items}) => items)
   }
 
   getAllShoppingList() {
@@ -112,14 +121,33 @@ export class RecipesComponent implements OnInit, OnDestroy {
   fetchMarmiton(url) {
       this.graphql.mutation(`
         recipeCreateWithMarmiton(url: "https://www.marmiton.org/recettes/recette_chocolat-des-neiges_18452.aspx") {
-          uuid, name, 
+          uuid, name, preparation
           items{
             name,
             quantity
           }
         }
-      `).then(data=>{
-        console.log(data)
+      `).then(async({ recipeCreateWithMarmiton })=>{
+        if(!recipeCreateWithMarmiton) return;
+        const allItems = await this.getAllItems()
+        recipeCreateWithMarmiton.items = recipeCreateWithMarmiton.items.map(marmitonItem=>{
+          console.log(marmitonItem)
+          marmitonItem.associateWith = [
+            ...allItems.filter(item=>{
+              console.log(marmitonItem.name.toUpperCase().includes(item.name.toUpperCase()))
+              return marmitonItem.name.toUpperCase().includes(item.name.toUpperCase())
+            })
+          ]
+          return marmitonItem
+        })
+        console.log(recipeCreateWithMarmiton)
+        this.updateRecipePopup.open(recipeCreateWithMarmiton).subscribe(data=>{
+          console.log(data)
+        })
       })
+  }
+  loadValueInInput(ev, name) {
+    ev.target.parentElement.parentElement.querySelector('.name').value = name
+    console.log()
   }
 }

@@ -1,1 +1,24 @@
-@import '../../../sdk'
+@import '../../../sdk';
+
+.ingredients{
+    margin-top: 10px;
+    .items{
+        .itemDescription {
+            display: flex;
+            align-content: center;
+        }
+        .itemAssociations {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-content: center;
+            .itemAssociation{
+                color: var(--headerBgColor);
+                border: 1px solid var(--headerBgColor);
+                margin: 5px;
+                padding: 5px;
+                border-radius: 4px;
+            }
+        }
+    }
+}
