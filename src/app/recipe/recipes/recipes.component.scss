@@ -1,11 +1,19 @@
 @import '../../../sdk';
 
+.marmitonInput {
+    margin: 10px;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+}
 .ingredients{
     margin-top: 10px;
     .items{
         .itemDescription {
             display: flex;
             align-content: center;
+        }
+        .quantity{
+            width: 30px
         }
         .itemAssociations {
             width: 100%;

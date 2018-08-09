@@ -1,7 +1,7 @@
 
 <div class="rhea-container">
   <div class="rhea-content">
-    <input type="text" name="" id="" (change)="fetchMarmiton($event.target.value)">
+    <input type="text" name="" class="marmitonInput" placeholder="URL marmiton" (change)="fetchMarmiton($event.target.value)">
     <a routerLink="./{{recipe.uuid}}" *ngFor='let recipe of recipes'>
       <rhea-card
         [uuid]='recipe'

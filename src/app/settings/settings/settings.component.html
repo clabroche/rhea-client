@@ -1,5 +1,6 @@
 <div class="rhea-container">
   <div class="rhea-content">
+    <button (click)="auth.deconnect()" class="deconnection">Deconnection</button>
     <clt-panel header='Login' [toggleable]='true' [collapsed]="true">
       <form [formGroup]="accountForm">
         <div class="label">Login</div>
@@ -28,7 +29,6 @@
           Changer le mot de passe
         </button>
       </form>
-      <button (click)="auth.deconnect()">Deconnection</button>
     </clt-panel>
 
     <clt-theme-manager #themeManager>

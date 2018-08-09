@@ -123,7 +123,7 @@ export class RecipesComponent implements OnInit, OnDestroy {
 
   fetchMarmiton(url) {
       this.graphql.mutation(`
-        recipeCreateWithMarmiton(url: "https://www.marmiton.org/recettes/recette_chocolat-des-neiges_18452.aspx") {
+        recipeCreateWithMarmiton(url: "${url}") {
           uuid, 
           name,
           preparation,
@@ -141,18 +141,14 @@ export class RecipesComponent implements OnInit, OnDestroy {
         if(!recipeCreateWithMarmiton) return;
         const allItems = await this.getAllItems()
         recipeCreateWithMarmiton.items = recipeCreateWithMarmiton.items.map(marmitonItem=>{
-          console.log(marmitonItem)
           marmitonItem.associateWith = [
             ...allItems.filter(item=>{
-              console.log(marmitonItem.name.toUpperCase().includes(item.name.toUpperCase()))
               return marmitonItem.name.toUpperCase().includes(item.name.toUpperCase())
             })
           ]
           return marmitonItem
         })
-        console.log(recipeCreateWithMarmiton)
         this.updateRecipePopup.open(recipeCreateWithMarmiton).subscribe(async data=>{
-          console.log(this.marmitonForm.nativeElement.length)
           let recipeName  = '';
           const obj: any = {}
           for (let i = 0; i < this.marmitonForm.nativeElement.length; i++) {
