@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CltPopupComponent, CltSidePanelComponent } from 'ngx-callisto/dist';
 import { CommonService } from '../../providers/common.service';
 import * as sort from 'fast-sort';
+import * as bluebird from 'bluebird';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -19,13 +20,15 @@ export class RecipesComponent implements OnInit, OnDestroy {
   @ViewChild('addPopup') addPopup: CltPopupComponent;
   @ViewChild('deletePopup') deletePopup: CltPopupComponent;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
+  @ViewChild('marmitonForm') marmitonForm;
 
   constructor(
     private graphql: GraphQLService,
     private fb: FormBuilder,
     private common: CommonService,
     private http: HttpClient,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     setTimeout(() => this.common.routeName = 'Recettes');
@@ -121,7 +124,14 @@ export class RecipesComponent implements OnInit, OnDestroy {
   fetchMarmiton(url) {
       this.graphql.mutation(`
         recipeCreateWithMarmiton(url: "https://www.marmiton.org/recettes/recette_chocolat-des-neiges_18452.aspx") {
-          uuid, name, preparation
+          uuid, 
+          name,
+          preparation,
+          description,
+          createdAt,
+          img,
+          nbPerson,
+          time,
           items{
             name,
             quantity
@@ -141,8 +151,46 @@ export class RecipesComponent implements OnInit, OnDestroy {
           return marmitonItem
         })
         console.log(recipeCreateWithMarmiton)
-        this.updateRecipePopup.open(recipeCreateWithMarmiton).subscribe(data=>{
-          console.log(data)
+        this.updateRecipePopup.open(recipeCreateWithMarmiton).subscribe(async data=>{
+          console.log(this.marmitonForm.nativeElement.length)
+          let recipeName  = '';
+          const obj: any = {}
+          for (let i = 0; i < this.marmitonForm.nativeElement.length; i++) {
+            const element = this.marmitonForm.nativeElement[i];
+            if (!obj[element.name]) 
+              obj[element.name] = {}
+            if (element.className === "quantity") obj[element.name].quantity = +element.value
+            else if (element.className === "name") obj[element.name].name = element.value
+            else recipeName =  element.value
+          }
+          delete obj.recipeName
+          const items = []
+          Object.keys(obj).map(key => {
+            items.push(obj[key])
+          })
+          recipeCreateWithMarmiton.name = recipeName
+          delete recipeCreateWithMarmiton.items
+          delete recipeCreateWithMarmiton.createdAt
+          delete recipeCreateWithMarmiton.__typename
+          delete recipeCreateWithMarmiton.uuid
+          let recipeUuid = await this.graphql.mutation(`
+            recipeCreate(input: ${this.graphql.stringifyWithoutPropertiesQuote(recipeCreateWithMarmiton)}) {
+              uuid
+            }
+          `)
+          recipeUuid = recipeUuid.recipeCreate.uuid
+          
+          await bluebird.map(items, async item => {
+            await this.graphql.mutation(`
+              recipeAddItem(
+                recipeUuid: "${recipeUuid}", 
+                input: ${this.graphql.stringifyWithoutPropertiesQuote(item)}
+              ) {
+                uuid
+              }
+            `)
+          })
+          return this.getAllShoppingList()
         })
       })
   }
