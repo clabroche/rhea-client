@@ -14,7 +14,7 @@ export class PermissionsGuard implements CanActivate {
         let authorized = false
         return this.checkPermissions(permissions).then(authorized=>{
             if (!authorized) {
-                this.router.navigate(redirect || ['/home'])
+                this.router.navigate(redirect || ['/'])
                 AuthError.next({ code: 403, message: { title: 'Accès non autorisé', detail: 'Contactez votre administrateur pour pouvoir accéder à cette section'}})
             }
             return authorized
