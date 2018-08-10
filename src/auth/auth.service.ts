@@ -17,8 +17,9 @@ interface Permission {
  * Describe type Role
  */
 interface Role {
-  name;
-  permissions: Array<Permission>;
+  uuid?;
+  name?;
+  permissions?: Array<Permission>;
 }
 
 /**

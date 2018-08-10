@@ -28,6 +28,7 @@ export class SettingsComponent implements OnInit, OnDestroy{
   ) { }
 
   ngOnInit() {
+    console.log(this.auth.me)
     const generatePassword = CltPassword.GeneratePassword();
     this.accountForm = this.fb.group({
       login: [this.auth.me.login, Validators.required],
@@ -77,7 +78,8 @@ export class SettingsComponent implements OnInit, OnDestroy{
         accountCreate(input:${
           this.graphql.stringifyWithoutPropertiesQuote({
             login: this.accountCreateForm.value.login,
-            password: this.accountCreateForm.value.passphrases.passphrase
+            password: this.accountCreateForm.value.passphrases.passphrase,
+            roleUuid: this.auth.me.role.uuid
           })
         }) {uuid}`
       ).then(_=>this.getAllAccounts())
