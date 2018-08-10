@@ -12,6 +12,7 @@ import { AuthService } from '../auth/auth.service';
 import { RheaSdkModule } from './rhea-sdk/rhea-sdk.module';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { HttpClientModule } from '@angular/common/http';
 registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ registerLocaleData(localeFr, 'fr');
     CltNavigationsModule.forRoot(),
     CltOverlayModule.forRoot(),
     RheaSdkModule,
+    HttpClientModule,
     CltFormsModule,
     RouterModule.forRoot([
       { path: '', resolve: { authService: AuthService }, children: [

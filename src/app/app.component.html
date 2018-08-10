@@ -3,6 +3,9 @@
     <div id="app-content">
         <clt-navbar [name]="getName()">
         </clt-navbar>
+        <div class='msg' *ngIf="update">
+            <a href="http://vps573766.ovh.net:3000/rhea.apk">Mise à jour disponible</a>
+        </div>
         <div id="app-outlet">
             <router-outlet></router-outlet>
         </div>

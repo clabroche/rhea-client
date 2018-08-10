@@ -4,7 +4,8 @@ import { AuthService, AuthError } from '../auth/auth.service';
 import { GraphQLError } from '../graphQL/graphQL.module';
 import { merge } from 'rxjs';
 import { CommonService } from './providers/common.service';
-
+import { HttpClient } from '@angular/common/http';
+const actualVersion = require('../../package.json')
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,14 +14,21 @@ import { CommonService } from './providers/common.service';
 export class AppComponent implements OnInit {
   title = 'app';
   sidebarConf: Configuration;
+  update = false
   constructor(
     themeService: CltThemeService,
     public sidebarService: CltSideBarService,
     public authservice: AuthService,
     private notifService: CltNotificationsService,
     public common: CommonService,
+    private http: HttpClient,
   ) {
     let theme = window.localStorage.getItem('theme')
+    http.get('http://' + window.location.hostname + ':3000/version').toPromise().then((remoteVersion: any)=>{
+      if(actualVersion.version !== remoteVersion.version) {
+        this.update = true;
+      }
+    })
     if(theme) {
       theme = JSON.parse(theme)
       themeService.theme = theme

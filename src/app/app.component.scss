@@ -15,7 +15,12 @@
         }
     }
 }
-
+.msg {
+    background-color: var(--stateActiveBgColor);
+    color: white;
+    padding: 10px;
+    text-decoration: underline;
+}
 @keyframes closeSidebarMobile {
     100% { width: 0; }
 }
