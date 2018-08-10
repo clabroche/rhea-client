@@ -18,7 +18,7 @@
         </rhea-card>
       </div>
     </div>
-    <button (click)="convert()" *ngIf="!converted">Convertir vers l'inventaire</button>
+    <button (click)="convert()" *ngIf="!converted" id="convert">Convertir vers l'inventaire</button>
   </div>
   <rhea-bar-bottom (action)='addItem()'>
     {{ shoppingList?.items?.length }} item{{shoppingList?.items?.length ? 's': ''}}
