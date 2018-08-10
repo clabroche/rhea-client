@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
   title = 'app';
   sidebarConf: Configuration;
   update = false
+  remoteVersion
+  actualVersion
   constructor(
     themeService: CltThemeService,
     public sidebarService: CltSideBarService,
@@ -25,6 +27,8 @@ export class AppComponent implements OnInit {
   ) {
     let theme = window.localStorage.getItem('theme')
     http.get('http://vps573766.ovh.net:3000/version').toPromise().then((remoteVersion: any)=>{
+      this.remoteVersion = remoteVersion.version;
+      this.actualVersion = actualVersion.version;
       if(actualVersion.version !== remoteVersion.version) {
         this.update = true;
       }

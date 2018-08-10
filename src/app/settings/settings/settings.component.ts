@@ -4,7 +4,7 @@ import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CltPassword, CltThemeManagerComponent, CltPopupComponent } from 'ngx-callisto/dist';
 import { CommonService } from '../../providers/common.service';
-
+const version = require('../../../../package.json')
 @Component({
   selector: 'settings',
   templateUrl: './settings.component.html',
@@ -15,6 +15,7 @@ export class SettingsComponent implements OnInit, OnDestroy{
   passwordForm: FormGroup
   accountCreateForm: FormGroup;
   accounts = []
+  version = version.version
   @ViewChild('themeManager') themeManager: CltThemeManagerComponent;
   @ViewChild('accountPopup') accountPopup: CltPopupComponent;
   theme;
