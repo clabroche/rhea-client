@@ -5,6 +5,7 @@ import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../providers/common.service';
 import * as sort from "fast-sort";
+import * as bluebird from "bluebird";
 @Component({
   selector: 'shopping-list',
   templateUrl: './shopping-list.component.html',
@@ -19,6 +20,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   timer;
   categories = [];
   sortCategoryObject;
+  converted = false
   @ViewChild('addPopup') addPopup: CltPopupComponent;
   @ViewChild('deletePopup') deletePopup: CltPopupComponent;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
@@ -36,6 +38,14 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initForms();
+    let convertedList = window.localStorage.getItem('convertedList')
+    if (!convertedList) {
+      window.localStorage.setItem('convertedList', JSON.stringify([]))
+    }
+    const convertedListParsed = convertedList ? JSON.parse(convertedList) : []
+    convertedListParsed.map(uuid=> {
+      if(this.uuid === uuid) this.converted = true;
+    })
     this.timer = setInterval(_ => {
       Promise.all([
         this.getShoppingList(),
@@ -180,5 +190,42 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         return (item.price * item.quantity) + total
       }, 0)
     },0).reduce((prev, curr)=>curr+prev , 0)
+  }
+
+  async convert() {
+    console.log(this.shoppingList)
+    const inventory = (await this.graphql.query(`
+      inventory {
+        items {
+          uuid
+          name,
+          quantity
+        }
+      }
+    `)).inventory
+
+    console.log(inventory)
+    await bluebird.map(this.shoppingList.items, async item=>{
+      inventory.items.map(itemInventory=>{
+          if(item.uuid === itemInventory.uuid) item.quantity = item.done + itemInventory.quantity
+      })
+      delete item.uuid
+      delete item.done
+      delete item.category
+      delete item.__typename
+      delete item.price
+      await this.graphql.mutation(`
+        inventoryAddItem(
+          input: ${this.graphql.stringifyWithoutPropertiesQuote(item)},
+          quantity: ${item.quantity}
+        ) {
+          uuid
+        }
+      `);
+      const converted = JSON.parse(window.localStorage.getItem('convertedList'))
+      converted.push(this.uuid)
+      window.localStorage.setItem('convertedList', JSON.stringify(converted))
+      this.converted = true;
+    })
   }
 }
