@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     private http: HttpClient,
   ) {
     let theme = window.localStorage.getItem('theme')
-    http.get('http://' + window.location.hostname + ':3000/version').toPromise().then((remoteVersion: any)=>{
+    http.get('http://vps573766.ovh.net:3000/version').toPromise().then((remoteVersion: any)=>{
       if(actualVersion.version !== remoteVersion.version) {
         this.update = true;
       }
