@@ -13,6 +13,7 @@ import { CltNotificationsService } from 'ngx-callisto/dist';
 })
 export class AuthPageComponent implements OnInit {
   form: FormGroup;
+  credentials = {}
   @ViewChild('password') password;
 
   /**
@@ -22,9 +23,10 @@ export class AuthPageComponent implements OnInit {
   constructor(private authService: AuthService, public notificationService: CltNotificationsService, private fb: FormBuilder) {}
 
   ngOnInit() {
+    const credentials = window.localStorage.getItem('credentials') ? JSON.parse(window.localStorage.getItem('credentials')) : {login:'', password:''}
     this.form = this.fb.group({
-      login: ['', [Validators.required]],
-      password:  ['', [Validators.minLength(6), Validators.required]],
+      login: [credentials.login, [Validators.required]],
+      password:  [credentials.password, [Validators.minLength(6), Validators.required]],
     });
   }
   /**

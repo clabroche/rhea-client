@@ -117,6 +117,11 @@ export class AuthService implements Resolve<any> {
       });
     });
     if (response.message === 'ok') {
+      window.localStorage.setItem('credentials', JSON.stringify({
+        login: user.login,
+        password: user.password
+      }));
+
       this.jwtService.saveToken(response.token);
       const result = await this.loadMe().catch(err => {
         return 'err';

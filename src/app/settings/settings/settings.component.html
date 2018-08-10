@@ -14,6 +14,23 @@
       </form>
     </clt-panel>
 
+    <clt-panel header='Mot de passes' [toggleable]='true' [collapsed]="true">    
+      <form [formGroup]="passwordForm">
+        <div class="label">Mot de passe</div>
+        <input type="password" formControlName="passphrase" [cltValidators]="passwordForm.controls['passphrase']">
+        <clt-form-errors [model]="passwordForm.controls['passphrase']"></clt-form-errors>
+
+        <div class="label">Vérification du mot de passe</div>
+        <input type="password" formControlName="recheckPassphrase" [cltValidators]="passwordForm">
+        <clt-form-errors [model]="passwordForm"></clt-form-errors>
+        
+        <button class="btn btn-success" [disabled]="!passwordForm.valid">
+          <i class="fa fa-check"></i>
+          Changer le mot de passe
+        </button>
+      </form>
+    </clt-panel>
+
     <clt-panel header='Création utilisateurs' [toggleable]='true' [collapsed]="true">
       <button (click)="createAccount()">Ajouter un utilisateur</button>
       <p-table #dt [value]="accounts" [paginator]="true" [rows]="10" [globalFilterFields]="['login']">
@@ -30,25 +47,6 @@
           </tr>
         </ng-template>
       </p-table>
-
-      
-    </clt-panel>
-
-    <clt-panel header='Mot de passes' [toggleable]='true' [collapsed]="true">    
-      <form [formGroup]="passwordForm">
-        <div class="label">Mot de passe</div>
-        <input type="password" formControlName="passphrase" [cltValidators]="passwordForm.controls['passphrase']">
-        <clt-form-errors [model]="passwordForm.controls['passphrase']"></clt-form-errors>
-
-        <div class="label">Vérification du mot de passe</div>
-        <input type="password" formControlName="recheckPassphrase" [cltValidators]="passwordForm">
-        <clt-form-errors [model]="passwordForm"></clt-form-errors>
-        
-        <button class="btn btn-success" [disabled]="!passwordForm.valid">
-          <i class="fa fa-check"></i>
-          Changer le mot de passe
-        </button>
-      </form>
     </clt-panel>
 
     <clt-theme-manager #themeManager>
