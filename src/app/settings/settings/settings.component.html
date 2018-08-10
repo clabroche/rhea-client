@@ -6,12 +6,32 @@
         <div class="label">Login</div>
         <input type="text" formControlName="login" [cltValidators]="accountForm.controls['login']">
         <clt-form-errors [model]="accountForm.controls['login']"></clt-form-errors>
-        
-        <button class="btn btn-success" [disabled]="!accountForm.valid" (submit)="changeAuth()">
+    
+        <button class="btn btn-success" [disabled]="!accountForm.valid" (submit)="changeAuth()" (click)="changeAuth()">
           <i class="fa fa-check"></i>
           Changer le login
         </button>
       </form>
+    </clt-panel>
+
+    <clt-panel header='Création utilisateurs' [toggleable]='true' [collapsed]="true">
+      <button (click)="createAccount()">Ajouter un utilisateur</button>
+      <p-table #dt [value]="accounts" [paginator]="true" [rows]="10" [globalFilterFields]="['login']">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              Login
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-account>
+          <tr>
+            <td>{{account.login}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      
     </clt-panel>
 
     <clt-panel header='Mot de passes' [toggleable]='true' [collapsed]="true">    
@@ -35,3 +55,28 @@
     </clt-theme-manager>
   </div>
 </div>
+
+
+
+<clt-popup #accountPopup width="90vw">
+  <div title>
+    Ajout d'un utilisateur
+  </div>
+  <div *clt-popup-body>
+    <form [formGroup]="accountCreateForm">
+      <div class="label">Login</div>
+      <input type="text" formControlName="login" [cltValidators]="accountCreateForm.controls['login']">
+      <clt-form-errors [model]="accountCreateForm.controls['login']"></clt-form-errors>
+    
+      <div class="label">Mot de passe</div>
+      <div formGroupName='passphrases'>
+        <input type="password" formControlName="passphrase" [cltValidators]="accountCreateForm.controls['passphrases'].controls['passphrase']">
+        <clt-form-errors [model]="accountCreateForm.controls['passphrases'].controls['passphrase']"></clt-form-errors>
+    
+        <div class="label">Vérification du mot de passe</div>
+        <input type="password" formControlName="recheckPassphrase" [cltValidators]="accountCreateForm.controls['passphrases']">
+        <clt-form-errors [model]="accountCreateForm.controls['passphrases']"></clt-form-errors>
+      </div>
+    </form>
+  </div>
+</clt-popup>
