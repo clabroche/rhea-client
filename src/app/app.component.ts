@@ -44,27 +44,27 @@ export class AppComponent implements OnInit {
           icon: 'fas fa-list',
           description: 'Listes',
           url: '/shoppingLists',
-          click: _=> { this.sidebarService.close() }
+          click: _=> { setTimeout(() => this.sidebarService.close(), 50) }
         }, {
           icon: 'fas fa-cookie-bite',
           description: 'Items',
           url: '/items',
-          click: _ => { this.sidebarService.close() }
+          click: _ => { setTimeout(() => this.sidebarService.close(), 50) }
         }, {
           icon: 'fas fa-th-large',
           description: 'Categories',
           url: '/categories',
-          click: _ => { this.sidebarService.close() }
+          click: _ => { setTimeout(() => this.sidebarService.close(), 50) }
         }, {
           icon: 'fas fa-book',
           description: 'Inventaire',
           url: '/inventory',
-          click: _ => { this.sidebarService.close() }
+          click: _ => { setTimeout(() => this.sidebarService.close(), 50) }
         }, {
           icon: 'fas fa-utensil-spoon',
           description: 'Recettes',
           url: '/recipes',
-          click: _ => { this.sidebarService.close() }
+          click: _ => { setTimeout(() => this.sidebarService.close(), 50) }
         }
       ],
       bottom: [
@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
           icon: 'fas fa-cog',
           description: 'Paramètres',
           url: '/settings',
-          click: _ => { this.sidebarService.close() }
+          click: _ => { setTimeout(() => this.sidebarService.close(), 50) }
         }
       ]
     };

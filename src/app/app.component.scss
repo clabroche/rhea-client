@@ -55,4 +55,41 @@
             }
         }
     }
+
+
+
+    $sidebarWidth:175px;
+    $sidebarWidthClose:10px;
+
+
+    @keyframes openSidebar {
+    0% {width: $sidebarWidthClose;}
+    to {width: $sidebarWidth;}
+    }
+    @keyframes closeSidebar {
+    0% {width: $sidebarWidth;}
+    to {width: $sidebarWidthClose;}
+    }
+    @keyframes openSidebarDescription {
+    0% {width: 0;}
+    to {width:$sidebarWidthClose}
+    }
+    @keyframes closeSidebarDescription {
+    0% {width:$sidebarWidthClose}
+    to {width:0}
+    }
+
+    #sidebar {
+        transition: width 0.4s;
+    }
+    .openSidebar {
+        animation: none !important;
+        width: 75vw !important;
+    }
+    .closeSidebar {
+        animation: none !important;
+        width: 0px !important;
+    }
 }
+
+
