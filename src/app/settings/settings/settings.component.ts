@@ -44,6 +44,7 @@ export class SettingsComponent implements OnInit, OnDestroy{
         recheckPassphrase: ['', Validators.required]
       }, { validator: CltPassword.MatchPassword })
     })
+    setTimeout(() => this.common.routeName = 'Paramètres');
     this.getAllAccounts()
     this.timer = setInterval(() => {
       window.localStorage.setItem('theme', JSON.stringify(this.themeManager.themeService.theme))

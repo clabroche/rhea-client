@@ -3,6 +3,7 @@
     <div id="app-content">
         <clt-navbar [name]="getName()">
         </clt-navbar>
+        <button class="trigger" (click)="sidebarService.toggle()"><i class="fas fa-bars"></i></button>
         <div class='msg' *ngIf="update">
             <a href="http://vps573766.ovh.net:3000/rhea.apk">Mise à jour disponible v{{actualVersion}} -> v{{remoteVersion}}</a>
         </div>

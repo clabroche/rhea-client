@@ -38,7 +38,7 @@ clt-side-panel {
 }
 button {
   padding: 10px;
-  background-color: #466c80;
+  background-color: var(--headerBgColor);
   color: white;
   border: none;
   &:active {
