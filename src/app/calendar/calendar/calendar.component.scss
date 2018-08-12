@@ -1,0 +1,40 @@
+@import '../../../sdk';
+
+.rhea-content{
+    height: 100%;
+}
+::ng-deep{
+    .fc.ui-widget{
+        margin: 10px;
+    }
+    .ui-calendar {
+        width: 100%;
+    }
+    .fc-center {
+        display: block !important;
+    }
+    .fc-left {
+        padding: 20px;
+        font-weight: bold;
+        font-size: 1.2em;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .fc-agendaDay-view {
+        .ui-state-highlight{
+            background-color: white !important;
+            color: black !important;
+        }
+    }
+    p-radiobutton {
+        width: 100%;
+        display: inline-block;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 10px;
+        .ui-radiobutton-icon::before {
+            content: none !important;
+        }
+    }
+}

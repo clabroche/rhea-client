@@ -22,6 +22,7 @@
     align-items: center;
     justify-content: center;
     font-size: 2em;
+    z-index: 11;
 }
 .msg {
     background-color: var(--stateActiveBgColor);

@@ -65,6 +65,11 @@ export class AppComponent implements OnInit {
           description: 'Recettes',
           url: '/recipes',
           click: _ => { setTimeout(() => this.sidebarService.close(), 50) }
+        }, {
+          icon: 'fas fa-calendar-alt',
+          description: 'Calendar',
+          url: '/calendar',
+          click: _ => { setTimeout(() => this.sidebarService.close(), 50) }
         }
       ],
       bottom: [

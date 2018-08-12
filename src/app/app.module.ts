@@ -35,7 +35,8 @@ registerLocaleData(localeFr, 'fr');
           { path: 'items', loadChildren: 'src/app/item/item.module#ItemModule'},
           { path: 'settings', loadChildren: 'src/app/settings/settings.module#SettingsModule'},
           { path: 'inventory', loadChildren: 'src/app/inventory/inventory.module#InventoryModule'},
-          { path: 'recipes', loadChildren: 'src/app/recipe/recipe.module#RecipeModule'}
+          { path: 'recipes', loadChildren: 'src/app/recipe/recipe.module#RecipeModule'},
+          { path: 'calendar', loadChildren: 'src/app/calendar/calendar.module#CalendarModule'}
         ]
       }
     ]),

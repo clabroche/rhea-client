@@ -4,6 +4,7 @@
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
 @import '~semantic-ui-progress/progress.min.css';
 @import '~primeicons/primeicons.css';
+@import '~primeng/resources/themes/lightness/theme.css';
 html, body {
     height: 100vh;
 }
@@ -47,9 +48,8 @@ button {
 }
 
 #navbar {
-  #leftRight {
-    box-shadow: 0 2px 11px rgba(0,0,0,0.8);
-  }
+  box-shadow: 0 2px 11px rgba(0,0,0,0.8) !important;
+  z-index: 10;
 }
 
 

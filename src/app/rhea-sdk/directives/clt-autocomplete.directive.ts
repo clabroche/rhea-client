@@ -35,6 +35,7 @@ export class CltAutocompleteDirective implements OnInit {
       this.renderer.setStyle($resultContainer, 'width', this.el.nativeElement.offsetWidth + 'px');
     });
     this.renderer.setStyle($resultContainer, 'position', 'absolute');
+    this.renderer.setStyle($resultContainer, 'z-index', '100');
     this.renderer.setStyle($resultContainer, 'background-color', 'white');
     const border = 'var(--contentBorderWidth) solid var(--contentBorderColor)';
     this.renderer.setStyle($resultContainer, 'border-left', border);

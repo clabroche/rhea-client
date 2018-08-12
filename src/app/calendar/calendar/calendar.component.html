@@ -1,0 +1,52 @@
+<div class="rhea-container">
+  <div class="rhea-content">
+    <p-schedule
+      [events]='events'
+      [header]="{
+            left: 'title',
+            center: 'prev,next',
+            right: 'month,agendaWeek,listWeek'
+        }"
+      locale="fr"
+      height='auto'
+      contentHeight='100%'
+      (onEventClick)="eventClick($event)"
+    ></p-schedule>
+  </div>
+  <rhea-bar-bottom (action)='addRecipe()'>
+  </rhea-bar-bottom>
+</div>
+
+
+<clt-popup #addPopup width="95vw" height="90vh">
+  <ng-template clt-popup-body>
+    <form [formGroup]="addRecipeForm">
+      <label>Nom</label>
+      <input type="text" formControlName="name" [cltValidators]="addRecipeForm.controls['name']" cltAutocomplete [source]="recipes"
+        property="name" [model]="addRecipeForm.controls['name']" />
+      <clt-form-errors [model]="addRecipeForm.controls['name']"></clt-form-errors>
+
+      <label>Date</label>
+      <p-calendar formControlName="date" formControlName="date" [cltValidators]="addRecipeForm.controls['date']" [locale]='fr'></p-calendar>
+      <clt-form-errors [model]="addRecipeForm.controls['date']"></clt-form-errors>
+
+      <label>Moment de la journée</label>
+      <div>
+        <p-radioButton name='moment' [formControl]="addRecipeForm.controls['moment']" value="midday" label="Midi"></p-radioButton>
+        <p-radioButton name='moment' [formControl]="addRecipeForm.controls['moment']" value="evening" label="Soir"></p-radioButton>
+      </div>
+      <clt-form-errors [model]="addRecipeForm.controls['moment']"></clt-form-errors>
+
+    </form>
+  </ng-template>
+</clt-popup>
+
+<clt-popup #eventPopup width="95vw" [noActions]='true'>
+  <div title>
+    {{addPopup.context?.title}}
+  </div>
+  <ng-template clt-popup-body>
+    <button routerLink="/recipes/{{eventPopup.context.uuid}}">Voir la recette</button>
+    <button (click)="deleteRecipe(eventPopup.context)">Supprimer l'événement</button>
+  </ng-template>
+</clt-popup>
