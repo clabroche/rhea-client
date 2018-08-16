@@ -12,12 +12,15 @@
     font-weight: bold;
 }
 .ingredients {
-    padding-left: 10px;
-    padding-right: 10px;
-    border-left: 5px solid var(--headerBgColor);
+    
     li {
-        margin-top: 10px;
-        margin-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin: 0;
+        border-left: 5px solid var(--headerBgColor);
+        &.notenough {
+            border-left: 5px solid red;
+        }
         display: flex;
         justify-content: space-between;
         align-items: center;

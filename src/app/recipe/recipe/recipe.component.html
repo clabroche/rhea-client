@@ -7,7 +7,7 @@
       </div>
       <div class="ingredients">
         <ul>
-          <li *ngFor='let item of recipe.items'>
+          <li *ngFor='let item of recipe.items' [ngClass]="{notenough: !item.enough}" >
             <div class="description">
               {{item.quantity}}
               {{item.name}}

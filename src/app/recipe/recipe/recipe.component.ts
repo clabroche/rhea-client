@@ -17,7 +17,8 @@ export class RecipeComponent implements OnInit, OnDestroy, AfterViewInit {
   sub;
   uuid;
   allItems = []
-  recipe:any = {};
+  recipe: any = {};
+  inventory: any = {};
   addItemForm: FormGroup
   preparation: string;
   editable = false
@@ -44,29 +45,51 @@ export class RecipeComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.initForms();
     this.timer = setInterval(_ => {
-      Promise.all([
-        this.getRecipe(),
-        this.getAllItems(),
-      ]);
+      this.interval()
     }, this.common.refreshInterval);
-    Promise.all([
-      this.getRecipe(),
-      this.getAllItems(),
-    ]);
+    this.interval()
   }
   ngOnDestroy() {
     this.sub.unsubscribe();
     clearInterval(this.timer);
   }
+  interval() {
+    return Promise.all([
+      this.getRecipe(),
+      this.getAllItems(),
+      this.getInventory(),
+    ]).then(_ => this.enough());
+  }
+  async enough() {
+    this.recipe.items.map(item=>{
+      this.inventory.items.map(inventoryItem=>{
+        if(item.uuid === inventoryItem.uuid && inventoryItem.quantity >= item.quantity) item.enough = true;
+        else item.enough = false;
+      })
+      return item;
+    })
+  }
 
   async getAllItems() {
     let items = await this.graphql.query(`
-      items { name, description, price}
+      items { uuid, name, description, price}
     `).then((data) => data.items);
     if (!items) return;
     items = sort(items).desc('name')
     if (!this.allItems) return this.allItems = items;
     this.allItems = this.common.merge(this.allItems, items);
+  }
+
+  async getInventory() {
+    let inventory = await this.graphql.query(`
+      inventory { 
+        items { uuid, name, description, quantity}
+      }
+    `).then((data) => data.inventory);
+    if (!inventory) return;
+    inventory = sort(inventory).desc('name')
+    if (!this.inventory) return this.inventory = inventory;
+    this.inventory = this.common.merge(this.inventory, inventory);
   }
 
   async getRecipe() {
@@ -143,10 +166,7 @@ export class RecipeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.editor['renderer'].setStyle(toolbar, 'display', 'none')
       clearInterval(this.timer)
       this.timer = setInterval(() => {
-        Promise.all([
-          this.getRecipe(),
-          this.getAllItems(),
-        ]);
+        this.interval()
       }, this.common.refreshInterval);
     } else {
       console.log('out')
