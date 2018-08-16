@@ -56,3 +56,14 @@ button {
 #sidebar::before {
   width: 100%;
 }
+
+.panel-container .panel-header .panel-actions button{
+  background-color: transparent !important;
+}
+  
+.host .host-container .host-title .close {
+  background-color: transparent !important;
+}
+#theme-manager{
+  max-width: initial !important;
+}

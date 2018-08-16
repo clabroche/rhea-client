@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   remoteVersion
   actualVersion
   constructor(
-    themeService: CltThemeService,
+    public themeService: CltThemeService,
     public sidebarService: CltSideBarService,
     public authservice: AuthService,
     private notifService: CltNotificationsService,
@@ -26,16 +26,27 @@ export class AppComponent implements OnInit {
     private http: HttpClient,
   ) {
     let theme = window.localStorage.getItem('theme')
-    http.get('http://vps573766.ovh.net:3000/version').toPromise().then((remoteVersion: any)=>{
+    http.get('http://vps573766.ovh.net:3000/version').toPromise().then((remoteVersion: any) => {
       this.remoteVersion = remoteVersion.version;
       this.actualVersion = actualVersion.version;
-      if(actualVersion.version !== remoteVersion.version) {
+      if (actualVersion.version !== remoteVersion.version) {
         this.update = true;
       }
     })
-    if(theme) {
+    themeService.themes.push(
+      {
+        name: 'Purple',
+        theme: { "--headerBorderColor": "#ffffff", "--headerBgColor": "#8d1680", "--headerBgColorAccent": "#9d3990", "--stateDefaultBgColor": "#b329a3", "--stateActiveBgColor": "#b314a1", "--stateHighlightBgColor": "#a72577", "--stateFocusBgColor": "#a72577", "--stateFocusTextColor": "#ffffff", "--stateHoverBgColor": "#6e3258" }
+      }, {
+        name: 'Grey',
+        theme: { "--headerBorderColor": "#ffffff", "--headerBgColor": "#7c7c7c", "--headerBgColorAccent": "#999999", "--stateDefaultBgColor": "#7c7c7c", "--stateActiveBgColor": "#3d3d3d", "--stateHighlightBgColor": "#7c7c7c", "--stateFocusBgColor": "#7c7c7c", "--stateFocusTextColor": "#ffffff", "--stateHoverBgColor": "#606060" }
+      }
+    )
+    if (theme) {
       theme = JSON.parse(theme)
-      themeService.theme = theme
+      Object.keys(theme).map(key=>{
+        this.themeService.setStyle(key, theme[key])
+      })
       themeService.reload()
     }
     this.sidebarConf = {
@@ -44,7 +55,7 @@ export class AppComponent implements OnInit {
           icon: 'fas fa-list',
           description: 'Listes',
           url: '/shoppingLists',
-          click: _=> { setTimeout(() => this.sidebarService.close(), 50) }
+          click: _ => { setTimeout(() => this.sidebarService.close(), 50) }
         }, {
           icon: 'fas fa-cookie-bite',
           description: 'Items',
