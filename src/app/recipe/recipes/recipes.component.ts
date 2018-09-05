@@ -142,16 +142,12 @@ export class RecipesComponent implements OnInit, OnDestroy {
 
   enough() {
     this.recipes.forEach(recipe=>{
-      recipe.quantity = 0;
+      recipe.quantity = recipe.items.length;
       recipe.done = 0;
       recipe.items.forEach(item => {
         this.inventory.items.forEach(inventoryItem => {
           if (item.uuid === inventoryItem.uuid && inventoryItem.quantity >= item.quantity) {
-            recipe.quantity++;
             recipe.done++;
-          }
-          else if (item.uuid === inventoryItem.uuid) {
-            recipe.quantity++;
           }
         })
         return item;
