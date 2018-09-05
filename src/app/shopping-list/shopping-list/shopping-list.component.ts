@@ -94,6 +94,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     const sortCategoryObject = {}
     this.categories = []
     if(shoppingList.items) {
+      shoppingList.items = sort(shoppingList.items).asc('name')
       shoppingList.items.map(item=>{
         if(item.category) {
           if (!sortCategoryObject[item.category.name]) {
@@ -116,9 +117,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     } else {
       this.sortCategoryObject = this.common.merge(this.sortCategoryObject, sortCategoryObject);
     }
-    Object.keys(this.sortCategoryObject).map(key=>{
-      this.sortCategoryObject[key] = sort(this.sortCategoryObject[key]).asc('name')
-    })
     this.categories = Object.keys(this.sortCategoryObject)
   }
 
