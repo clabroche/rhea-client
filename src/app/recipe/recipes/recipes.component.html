@@ -8,6 +8,8 @@
         [title]="recipe.name"
         description="{{recipe.createdAt | date:'d MMM y'}} {{recipe.description ? '-' : ''}} {{recipe.description}}"
         [noCheckBox]="true"
+        [quantity]="recipe.quantity"
+        [done]="recipe.done"
         (action)="openActionMenu($event)"
       ></rhea-card>
     </a>

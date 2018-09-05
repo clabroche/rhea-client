@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 export class RecipesComponent implements OnInit, OnDestroy {
   recipes = [];
   recipeForm: FormGroup;
+  inventory: any = {};
   timer;
   @ViewChild('updateRecipePopup') updateRecipePopup: CltPopupComponent;
   @ViewChild('addPopup') addPopup: CltPopupComponent;
@@ -34,9 +35,12 @@ export class RecipesComponent implements OnInit, OnDestroy {
     setTimeout(() => this.common.routeName = 'Recettes');
     this.initForms();
     this.timer = setInterval(_ => {
-      this.getAllShoppingList();
+      bluebird.all([
+        this.getAllRecipes(),
+        this.getInventory()
+      ]).then(_=>this.enough())
     }, this.common.refreshInterval)
-    this.getAllShoppingList();
+    this.getAllRecipes();
   }
 
   ngOnDestroy() {
@@ -65,13 +69,28 @@ export class RecipesComponent implements OnInit, OnDestroy {
     `).then(({items}) => items)
   }
 
-  getAllShoppingList() {
+  async getInventory() {
+    let inventory = await this.graphql.query(`
+      inventory { 
+        items { uuid, name, description, quantity}
+      }
+    `).then((data) => data.inventory);
+    if (!inventory) return;
+    inventory = sort(inventory).desc('name')
+    if (!this.inventory) return this.inventory = inventory;
+    this.inventory = this.common.merge(this.inventory, inventory);
+  }
+
+  getAllRecipes() {
     this.graphql.query(`
       recipes {
         uuid
         name
         createdAt
         description
+        items {
+          uuid, quantity
+        }
       }
     `).then(({ recipes }) => {
         recipes = recipes.map(recipe => {
@@ -95,7 +114,7 @@ export class RecipesComponent implements OnInit, OnDestroy {
           uuid
         }
       `).then(_ => {
-          return this.getAllShoppingList();
+          return this.getAllRecipes();
         });
     });
   }
@@ -105,7 +124,7 @@ export class RecipesComponent implements OnInit, OnDestroy {
       if (!result) return;
       return this.graphql.mutation(`
         recipeDelete(uuid: "${recipe.uuid}")
-      `).then(_ => this.getAllShoppingList());
+      `).then(_ => this.getAllRecipes());
     });
   }
 
@@ -117,8 +136,28 @@ export class RecipesComponent implements OnInit, OnDestroy {
       await this.graphql.mutation(`
         recipeCreate(input: ${result}) {uuid}
       `);
-      return this.getAllShoppingList();
+      return this.getAllRecipes();
     });
+  }
+
+  enough() {
+
+    this.recipes.forEach(recipe=>{
+      recipe.quantity = 0;
+      recipe.done = 0;
+      recipe.items.forEach(item => {
+        this.inventory.items.forEach(inventoryItem => {
+          if (item.uuid === inventoryItem.uuid && inventoryItem.quantity >= item.quantity) {
+            recipe.quantity++;
+            recipe.done++;
+          }
+          else {
+            recipe.quantity++;
+          }
+        })
+        return item;
+      })
+    })
   }
 
   fetchMarmiton(url) {
@@ -186,7 +225,7 @@ export class RecipesComponent implements OnInit, OnDestroy {
               }
             `)
           })
-          return this.getAllShoppingList()
+          return this.getAllRecipes()
         })
       })
   }

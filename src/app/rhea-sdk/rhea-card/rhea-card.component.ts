@@ -23,6 +23,7 @@ export class RheaCardComponent implements OnChanges {
   @Input() done: number;
   @Input() noCheckBox = false;
   @Input() checked = false;
+  @Input() progressColor;
   progressUuid = uuidV4();
   @Output() checkedChange = new EventEmitter();
   @Output() action = new EventEmitter();
@@ -36,7 +37,7 @@ export class RheaCardComponent implements OnChanges {
     setTimeout(() => {
       $('#progress-' + this.progressUuid.toString()).progress({
         percent: (this.done * 100) / this.quantity,
-        showActivity: false
+        showActivity: false,
       });
     });
   }
