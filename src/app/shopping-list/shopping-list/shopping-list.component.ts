@@ -73,7 +73,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       items { name, description, price}
     `).then((data) => data.items);
     if (!items) return;
-    items = sort(items).desc('name')
+    items = sort(items).asc('name')
     if (!this.items) return this.items = items;
     this.items = this.common.merge(this.items, items);
   }
@@ -116,6 +116,9 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     } else {
       this.sortCategoryObject = this.common.merge(this.sortCategoryObject, sortCategoryObject);
     }
+    Object.keys(this.sortCategoryObject).map(key=>{
+      this.sortCategoryObject[key] = sort(this.sortCategoryObject[key]).asc('name')
+    })
     this.categories = Object.keys(this.sortCategoryObject)
   }
 
