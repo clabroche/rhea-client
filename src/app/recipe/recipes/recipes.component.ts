@@ -141,7 +141,6 @@ export class RecipesComponent implements OnInit, OnDestroy {
   }
 
   enough() {
-
     this.recipes.forEach(recipe=>{
       recipe.quantity = 0;
       recipe.done = 0;
@@ -151,7 +150,7 @@ export class RecipesComponent implements OnInit, OnDestroy {
             recipe.quantity++;
             recipe.done++;
           }
-          else {
+          else if (item.uuid === inventoryItem.uuid) {
             recipe.quantity++;
           }
         })

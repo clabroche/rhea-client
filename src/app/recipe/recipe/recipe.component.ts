@@ -64,10 +64,10 @@ export class RecipeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.recipe.items.map(item=>{
       this.inventory.items.map(inventoryItem=>{
         if(item.uuid === inventoryItem.uuid && inventoryItem.quantity >= item.quantity) item.enough = true;
-        else item.enough = false;
       })
       return item;
     })
+    console.log()
   }
 
   async getAllItems() {
