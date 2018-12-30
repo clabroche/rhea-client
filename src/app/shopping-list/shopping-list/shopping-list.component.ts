@@ -116,8 +116,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       this.sortCategoryObject = sortCategoryObject
     } else {
       this.sortCategoryObject = this.common.merge(this.sortCategoryObject, sortCategoryObject);
+      this.categories = sort(Object.keys(this.sortCategoryObject)).asc()
     }
-    this.categories = Object.keys(this.sortCategoryObject)
   }
 
   addItem() {
