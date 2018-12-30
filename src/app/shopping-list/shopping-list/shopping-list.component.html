@@ -1,21 +1,30 @@
 <div class="rhea-container">
   <div class="rhea-content">
     <div *ngFor="let category of categories">
-      <h2>{{category === 'other' ? 'Autres' : category}}</h2>
-      <div *ngFor="let item of sortCategoryObject[category]">
-        <rhea-card 
-          [title]="item.name" 
-          [description]="item.description"
-          [additionalText]="(item.price * item.quantity).toFixed(2) + '€'"
-          [circleText]="item.quantity - item.done" 
-          [quantity]='item.quantity'
-          [done]="item.done"
-          [checked]='item.done === item.quantity'
-          (click)="doneIncrement(item)"
-          (action)="openActionMenu(item)"
-          (checkedChange)="doneIncrement(item, $event)"
-          >
-        </rhea-card>
+      <h2  (click)="toggles[category] = !toggles[category]">
+        <div class="desc">
+          {{category === 'other' ? 'Autres' : category}}
+        </div>
+        <div class="action">
+          <i class="fas " [ngClass]="{'fa-chevron-up': toggles[category], 'fa-chevron-down'  : !toggles[category]}"></i>
+        </div>
+      </h2>
+      <div class="categoryContent" [ngClass]="{'close': toggles[category]}">
+        <div *ngFor="let item of sortCategoryObject[category]">
+          <rhea-card 
+            [title]="item.name" 
+            [description]="item.description"
+            [additionalText]="(item.price * item.quantity).toFixed(2) + '€'"
+            [circleText]="item.quantity - item.done" 
+            [quantity]='item.quantity'
+            [done]="item.done"
+            [checked]='item.done === item.quantity'
+            (click)="doneIncrement(item)"
+            (action)="openActionMenu(item)"
+            (checkedChange)="doneIncrement(item, $event)"
+            >
+          </rhea-card>
+        </div>
       </div>
     </div>
     <button (click)="convert()" *ngIf="!converted" id="convert">Convertir vers l'inventaire</button>

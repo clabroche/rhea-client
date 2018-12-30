@@ -21,6 +21,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   categories = [];
   sortCategoryObject;
   converted = false
+  toggles = {}
   @ViewChild('addPopup') addPopup: CltPopupComponent;
   @ViewChild('deletePopup') deletePopup: CltPopupComponent;
   @ViewChild('actionMenu') actionMenu: CltSidePanelComponent;
