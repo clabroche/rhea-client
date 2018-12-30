@@ -5,23 +5,27 @@
     *ngIf="done !== undefined && quantity !== undefined">
     <div class="bar"></div>
   </div>
-  <div *ngIf='!noCheckBox' class="rhea-card-check {{checked ? 'checked' : ''}}" (click)="toggleCheck()">
-  </div>
-  <div class="rhea-card-content">
-    <div class="rhea-card-title" *ngIf="title">
-      {{ title }}
+  <div class="firstLine">
+    <div *ngIf='!noCheckBox' class="rhea-card-check {{checked ? 'checked' : ''}}" (click)="toggleCheck()">
     </div>
-    <div class="rhea-card-description" *ngIf="description">
-      {{ description }}
+    <div class="rhea-card-content">
+      <div class="rhea-card-title" *ngIf="title">
+        {{ title }}
+      </div>
+      <div class="rhea-card-description" *ngIf="description">
+        {{ description }}
+      </div>
     </div>
   </div>
-  <div class="rhea-card-actions" *ngIf="!noAction">
-    <i class="rhea-card-action" *ngIf="additionalText !== undefined"> {{additionalText}}</i>
-    <div class="rhea-card-action circle" *ngIf="circleText !== undefined">{{circleText}}</div>
-    <i
-      class="rhea-card-action {{actionIcon ? actionIcon : 'fas fa-sliders-h'}}" 
-      *ngIf="!noAction"  
-      (click)="$event.preventDefault();$event.stopPropagation();action.emit(uuid);" 
-      ></i>
+  <div class="secondLine">
+    <div class="rhea-card-actions" *ngIf="!noAction">
+      <div class="rhea-card-action circle" *ngIf="circleText !== undefined">{{circleText}}</div>
+      <i class="rhea-card-action additionalText" *ngIf="additionalText !== undefined"> {{additionalText}}</i>
+      <i
+        class="rhea-card-action action {{actionIcon ? actionIcon : 'fas fa-sliders-h'}}" 
+        *ngIf="!noAction"  
+        (click)="$event.preventDefault();$event.stopPropagation();action.emit(uuid);" 
+        ></i>
+    </div>
   </div>
 </div>

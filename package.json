@@ -48,7 +48,7 @@
     "moment": "^2.22.2",
     "ng2-date-picker": "^2.10.2",
     "ngx-bootstrap": "^3.0.1",
-    "ngx-callisto": "git+ssh://git@github.com/clabroche/ngx-callisto.git#v4.0.6",
+    "ngx-callisto": "git+https://git@github.com/clabroche/ngx-callisto.git#v4.0.6",
     "ngx-editor": "^3.3.0",
     "ngx-quill": "^3.4.0",
     "ol": "^5.1.3",

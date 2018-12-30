@@ -6,7 +6,7 @@
         <rhea-card 
           [title]="item.name" 
           [description]="item.description"
-          [additionalText]="item.price * item.quantity + '€'"
+          [additionalText]="(item.price * item.quantity).toFixed(2) + '€'"
           [circleText]="item.quantity - item.done" 
           [quantity]='item.quantity'
           [done]="item.done"

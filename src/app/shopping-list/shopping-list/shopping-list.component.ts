@@ -190,7 +190,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       return this.sortCategoryObject[category].reduce((total, item)=>{
         return (item.price * item.quantity) + total
       }, 0)
-    },0).reduce((prev, curr)=>curr+prev , 0)
+    },0).reduce((prev, curr)=>curr+prev , 0).toFixed(2)
   }
 
   async convert() {
