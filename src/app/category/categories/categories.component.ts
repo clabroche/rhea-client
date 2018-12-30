@@ -3,6 +3,7 @@ import { CltPopupComponent, CltSidePanelComponent } from 'ngx-callisto/dist';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GraphQLService } from '../../../graphQL/providers/graphQL.service';
 import { CommonService } from '../../providers/common.service';
+import * as sort from "fast-sort";
 
 @Component({
   selector: 'categories',
@@ -59,10 +60,13 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.categories = this.common.merge(this.categories, categories);
   }
   async getAllItems() {
-    return this.items = (await this.graphql.query(`items {
+    return this.items = sort((await this.graphql.query(`items {
       name, description, uuid, 
       category { name }
-    }`)).items || []
+    }`)).items || []).asc(item => {
+      if (item.category) return item.category.name
+      return ''
+    })
   }
   async addCategory() {
     this.actionMenu.close();
